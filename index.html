@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>КОНТЕКСТ.БЮРО // TRON PROTOCOL</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90' fill='%2300f3ff'>◈</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg-deep: #030508;
+  --bg-panel: rgba(0, 15, 30, 0.65);
+  --neon-blue: #00f3ff;
+  --neon-dark: #0088ff;
+  --neon-red: #ff003c;
+  --neon-red-soft: rgba(255, 0, 60, 0.15);
+  --text-main: #e0f7ff;
+  --text-dim: #5a8a9e;
+  --font-head: 'Orbitron', sans-serif;
+  --font-mono: 'Share Tech Mono', monospace;
+  --radius: 16px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+[hidden] { display: none !important; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-mono);
+  background-color: var(--bg-deep);
+  color: var(--text-main);
+  line-height: 1.6;
+  min-height: 100vh;
+  overflow-x: hidden;
+  background-image: 
+    linear-gradient(rgba(0, 243, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 243, 255, 0.03) 1px, transparent 1px),
+    radial-gradient(ellipse at 50% 0%, rgba(0, 136, 255, 0.15) 0%, transparent 60%);
+  background-size: 40px 40px, 40px 40px, 100% 100%;
+  background-attachment: fixed;
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.15) 0px, rgba(0, 0, 0, 0.15) 1px, transparent 1px, transparent 3px);
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.4;
+}
+
+::selection { background: var(--neon-blue); color: #000; }
+
+h1, h2, .logo { font-family: var(--font-head); text-transform: uppercase; letter-spacing: 2px; }
+.glow-text { text-shadow: 0 0 10px rgba(0, 243, 255, 0.6), 0 0 20px rgba(0, 243, 255, 0.3); }
+.glow-red { text-shadow: 0 0 10px rgba(255, 0, 60, 0.6), 0 0 20px rgba(255, 0, 60, 0.3); }
+
+.topbar {
+  position: sticky; top: 0; z-index: 50;
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  padding: 16px 32px;
+  background: rgba(3, 5, 8, 0.85);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(0, 243, 255, 0.2);
+  box-shadow: 0 4px 30px rgba(0, 243, 255, 0.05);
+}
+.logo {
+  font-weight: 800; font-size: 1.1rem; text-decoration: none; color: var(--neon-blue);
+  display: flex; align-items: center; gap: 12px;
+}
+.logo-badge {
+  display: grid; place-items: center; width: 36px; height: 36px;
+  background: rgba(0, 243, 255, 0.1); border: 1px solid var(--neon-blue);
+  box-shadow: 0 0 15px rgba(0, 243, 255, 0.3), inset 0 0 10px rgba(0, 243, 255, 0.1);
+  font-size: 1rem; transition: all 0.3s ease;
+}
+.logo:hover .logo-badge { background: var(--neon-blue); color: #000; box-shadow: 0 0 25px var(--neon-blue); }
+.top-status { display: flex; gap: 12px; flex-wrap: wrap; }
+.status-chip {
+  font-size: 0.75rem; border: 1px solid rgba(0, 243, 255, 0.3);
+  background: rgba(0, 243, 255, 0.05); padding: 6px 12px;
+  display: inline-flex; align-items: center; gap: 8px; color: var(--neon-blue);
+}
+.status-chip.ok { border-color: var(--neon-blue); box-shadow: 0 0 10px rgba(0, 243, 255, 0.2); }
+.status-chip.warn { border-color: #ffaa00; color: #ffaa00; background: rgba(255, 170, 0, 0.05); }
+.pulse {
+  width: 8px; height: 8px; border-radius: 50%; background: var(--neon-blue);
+  animation: pulse-glow 2s infinite;
+}
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(0, 243, 255, 0.6); }
+  50% { box-shadow: 0 0 0 8px rgba(0, 243, 255, 0); }
+}
+
+.wrap { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+
+.intro { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 48px; align-items: center; padding: 60px 0 40px; }
+.kicker { color: var(--neon-dark); font-size: 0.85rem; letter-spacing: 3px; margin-bottom: 16px; }
+h1 { font-size: clamp(1.8rem, 4vw, 3rem); line-height: 1.2; color: var(--text-main); }
+.hl { color: var(--neon-blue); text-shadow: 0 0 15px rgba(0, 243, 255, 0.5); }
+.lead { margin-top: 20px; font-size: 1.05rem; color: var(--text-dim); max-width: 50ch; }
+.intro-actions { margin-top: 32px; display: flex; align-items: center; gap: 24px; flex-wrap: wrap; }
+
+.pipeline {
+  list-style: none; position: relative;
+  background: var(--bg-panel); backdrop-filter: blur(10px);
+  border: 1px solid rgba(0, 243, 255, 0.2); border-radius: var(--radius);
+  padding: 24px;
+  box-shadow: 0 0 30px rgba(0, 243, 255, 0.05), inset 0 0 30px rgba(0, 243, 255, 0.03);
+}
+.pipeline::before {
+  content: "SYSTEM_PROTOCOL"; position: absolute; top: -10px; left: 20px;
+  background: var(--bg-deep); font-size: 0.7rem; letter-spacing: 2px;
+  padding: 0 10px; color: var(--neon-dark); border: 1px solid rgba(0, 243, 255, 0.2);
+}
+.pipeline li {
+  display: flex; gap: 16px; align-items: baseline; padding: 12px 8px;
+  border-bottom: 1px solid rgba(0, 243, 255, 0.1); transition: all 0.3s ease;
+}
+.pipeline li:last-child { border-bottom: none; }
+.pipeline li:hover { background: rgba(0, 243, 255, 0.05); transform: translateX(8px); }
+.pipeline b { font-family: var(--font-head); color: var(--neon-blue); font-size: 0.85rem; }
+.pipeline span { color: var(--text-main); font-size: 0.95rem; }
+
+.btn {
+  font-family: var(--font-head); font-weight: 600; font-size: 0.9rem; letter-spacing: 1px;
+  border: 1px solid var(--neon-blue); cursor: pointer; padding: 14px 24px;
+  background: rgba(0, 243, 255, 0.05); color: var(--neon-blue);
+  box-shadow: 0 0 15px rgba(0, 243, 255, 0.15), inset 0 0 15px rgba(0, 243, 255, 0.05);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: inline-flex; align-items: center; gap: 10px; text-transform: uppercase;
+  animation: soft-pulse 3s infinite alternate;
+}
+@keyframes soft-pulse {
+  0% { box-shadow: 0 0 15px rgba(0, 243, 255, 0.15), inset 0 0 15px rgba(0, 243, 255, 0.05); }
+  100% { box-shadow: 0 0 25px rgba(0, 243, 255, 0.3), inset 0 0 20px rgba(0, 243, 255, 0.1); }
+}
+.btn:hover {
+  background: var(--neon-blue); color: #000;
+  box-shadow: 0 0 30px var(--neon-blue), 0 0 60px rgba(0, 243, 255, 0.4);
+  transform: translateY(-2px);
+}
+.btn:active { transform: translateY(2px); box-shadow: 0 0 5px var(--neon-blue); }
+.btn:disabled { opacity: 0.4; cursor: not-allowed; animation: none; transform: none; }
+.btn-ghost { border-color: var(--text-dim); color: var(--text-dim); background: transparent; box-shadow: none; animation: none; }
+.btn-ghost:hover { border-color: var(--neon-blue); color: var(--neon-blue); background: rgba(0, 243, 255, 0.05); box-shadow: 0 0 15px rgba(0, 243, 255, 0.2); }
+.link-arrow {
+  font-size: 0.85rem; color: var(--neon-blue); text-decoration: none;
+  border-bottom: 1px solid var(--neon-blue); padding-bottom: 4px; transition: all 0.3s;
+}
+.link-arrow:hover { text-shadow: 0 0 10px var(--neon-blue); }
+
+.workspace { display: grid; grid-template-columns: 1fr 1.1fr; gap: 32px; align-items: start; padding-bottom: 80px; }
+.panel {
+  background: var(--bg-panel); backdrop-filter: blur(12px);
+  border: 1px solid rgba(0, 243, 255, 0.2); border-radius: var(--radius);
+  box-shadow: 0 0 40px rgba(0, 243, 255, 0.05), inset 0 0 40px rgba(0, 243, 255, 0.03);
+  overflow: hidden;
+}
+.panel-head {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  padding: 16px 24px; border-bottom: 1px solid rgba(0, 243, 255, 0.2);
+  background: linear-gradient(90deg, rgba(0, 243, 255, 0.08), transparent);
+}
+.panel-head h2 { font-size: 1rem; font-weight: 600; color: var(--neon-blue); display: flex; align-items: center; gap: 12px; }
+.panel-num {
+  font-family: var(--font-mono); font-size: 0.75rem; background: rgba(0, 243, 255, 0.1);
+  color: var(--neon-blue); border: 1px solid rgba(0, 243, 255, 0.3); padding: 4px 8px;
+}
+.mode-badge {
+  font-size: 0.7rem; border: 1px solid rgba(0, 243, 255, 0.3); padding: 4px 10px;
+  background: rgba(0, 243, 255, 0.05); color: var(--neon-blue);
+}
+.doc-panel > *:not(.panel-head) { margin: 20px 24px; }
+
+.dropzone {
+  display: flex; flex-direction: column; align-items: center; gap: 12px; text-align: center;
+  border: 1px dashed rgba(0, 243, 255, 0.4); border-radius: 12px;
+  padding: 32px 16px; cursor: pointer; background: rgba(0, 243, 255, 0.02);
+  transition: all 0.3s ease;
+}
+.dropzone:hover, .dropzone.drag { background: rgba(0, 243, 255, 0.08); border-color: var(--neon-blue); box-shadow: 0 0 20px rgba(0, 243, 255, 0.1); }
+.dropzone.loaded { border-style: solid; border-color: var(--neon-blue); background: rgba(0, 243, 255, 0.05); }
+.dz-icon { font-size: 2rem; color: var(--neon-blue); animation: float 3s ease-in-out infinite; }
+@keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+.dz-text b { display: block; font-size: 1rem; color: var(--text-main); }
+.dz-text span { font-size: 0.85rem; color: var(--text-dim); }
+
+.stats { display: flex; border: 1px solid rgba(0, 243, 255, 0.2); border-radius: 8px; overflow: hidden; background: rgba(0, 0, 0, 0.3); }
+.stat { flex: 1; padding: 12px 8px; text-align: center; border-right: 1px solid rgba(0, 243, 255, 0.2); }
+.stat:last-child { border-right: none; }
+.stat b { display: block; font-family: var(--font-head); font-size: 1.4rem; color: var(--neon-blue); text-shadow: 0 0 10px rgba(0, 243, 255, 0.4); }
+.stat span { font-size: 0.65rem; letter-spacing: 2px; color: var(--text-dim); text-transform: uppercase; }
+
+.chips { display: flex; flex-direction: column; gap: 8px; max-height: 220px; overflow-y: auto; padding-right: 8px; }
+.chip {
+  display: flex; gap: 12px; align-items: baseline;
+  border: 1px solid rgba(0, 243, 255, 0.15); background: rgba(0, 10, 20, 0.5);
+  padding: 10px 12px; font-size: 0.85rem; color: var(--text-dim);
+  animation: slideUp 0.5s ease both; transition: all 0.3s;
+}
+.chip:hover { border-color: var(--neon-blue); color: var(--text-main); background: rgba(0, 243, 255, 0.05); transform: translateX(6px); }
+.chip i { font-style: normal; font-family: var(--font-head); font-size: 0.7rem; color: var(--neon-dark); flex: none; }
+.chips-note { margin-top: -12px; font-size: 0.7rem; color: var(--text-dim); text-align: right; }
+
+.btn-analyze { width: calc(100% - 48px); justify-content: center; margin-top: 8px; }
+.scan { display: flex; align-items: center; gap: 16px; margin-top: 16px; }
+.scan-bar { flex: 1; height: 8px; border: 1px solid rgba(0, 243, 255, 0.3); overflow: hidden; background: rgba(0,0,0,0.5); border-radius: 4px; }
+.scan-bar i {
+  display: block; height: 100%; width: 30%;
+  background: linear-gradient(90deg, transparent, var(--neon-blue), transparent);
+  box-shadow: 0 0 15px var(--neon-blue);
+  animation: scanmove 1.5s linear infinite;
+}
+@keyframes scanmove { from { transform: translateX(-100%); } to { transform: translateX(400%); } }
+
+.issue {
+  border: 1px solid rgba(255, 0, 60, 0.4); border-left: 4px solid var(--neon-red);
+  background: rgba(255, 0, 60, 0.05); padding: 16px; margin-top: 16px; border-radius: 0 12px 12px 0;
+  animation: slideUp 0.5s ease both;
+}
+.issue-head { font-family: var(--font-head); font-size: 0.75rem; letter-spacing: 2px; color: var(--neon-red); text-transform: uppercase; margin-bottom: 8px; text-shadow: 0 0 8px rgba(255,0,60,0.5); }
+.issue p { font-size: 0.95rem; color: var(--text-main); margin-bottom: 10px; }
+.issue blockquote {
+  font-size: 0.85rem; background: rgba(0, 0, 0, 0.4); border: 1px solid rgba(255, 0, 60, 0.2);
+  padding: 8px 12px; margin-top: 8px; color: var(--text-dim); font-style: italic;
+}
+.ok-banner {
+  border: 1px solid rgba(0, 243, 255, 0.3); border-left: 4px solid var(--neon-blue);
+  background: rgba(0, 243, 255, 0.05); padding: 16px; font-weight: 600; color: var(--neon-blue);
+  animation: slideUp 0.5s ease both;
+}
+
+.chat-panel { display: flex; flex-direction: column; height: 100%; }
+.chat {
+  height: 480px; overflow-y: auto; padding: 24px; display: flex; flex-direction: column; gap: 16px;
+  background: rgba(0, 5, 10, 0.4);
+  background-image: repeating-linear-gradient(0deg, transparent 0 39px, rgba(0, 243, 255, 0.03) 39px 40px);
+}
+.msg { display: flex; gap: 12px; animation: slideUp 0.4s ease both; }
+.msg-avatar {
+  flex: none; width: 36px; height: 36px; border: 1px solid var(--neon-blue);
+  display: grid; place-items: center; font-family: var(--font-head); font-size: 0.75rem; font-weight: 700;
+  background: rgba(0, 243, 255, 0.1); color: var(--neon-blue);
+  box-shadow: 0 0 10px rgba(0, 243, 255, 0.2);
+}
+.msg.user { flex-direction: row-reverse; }
+.msg.user .msg-avatar { background: var(--neon-blue); color: #000; border-color: var(--neon-blue); box-shadow: 0 0 15px var(--neon-blue); }
+.msg-bubble {
+  max-width: 85%; border: 1px solid rgba(0, 243, 255, 0.2); background: rgba(0, 15, 30, 0.7);
+  padding: 14px 16px; border-radius: 4px 16px 16px 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+.msg.user .msg-bubble {
+  background: rgba(0, 243, 255, 0.1); border-color: rgba(0, 243, 255, 0.4);
+  border-radius: 16px 4px 16px 16px; color: var(--text-main);
+}
+.msg-meta { font-size: 0.65rem; opacity: 0.6; margin-bottom: 6px; letter-spacing: 1px; }
+.msg-text { font-size: 0.95rem; line-height: 1.5; }
+
+.ctx-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px; }
+.ctx-chip {
+  display: flex; gap: 10px; align-items: baseline; font-size: 0.8rem;
+  border: 1px solid rgba(0, 243, 255, 0.2); background: rgba(0, 243, 255, 0.05);
+  padding: 8px 10px; border-radius: 4px; animation: slideUp 0.4s ease both;
+}
+.ctx-chip b { font-family: var(--font-head); font-size: 0.7rem; color: var(--neon-blue); flex: none; }
+
+.flag {
+  background: var(--neon-red-soft); color: var(--neon-red); font-weight: 700;
+  padding: 0 6px; border-bottom: 2px solid var(--neon-red);
+  text-shadow: 0 0 8px rgba(255, 0, 60, 0.6);
+  animation: glitch-flash 2s infinite alternate;
+}
+@keyframes glitch-flash {
+  0% { text-shadow: 0 0 8px rgba(255, 0, 60, 0.6); }
+  100% { text-shadow: 0 0 15px rgba(255, 0, 60, 0.9), 0 0 30px rgba(255, 0, 60, 0.4); }
+}
+
+.typing { display: inline-flex; gap: 4px; padding: 4px 0; }
+.typing i {
+  width: 6px; height: 6px; border-radius: 50%; background: var(--neon-blue);
+  animation: tp 1s infinite; box-shadow: 0 0 8px var(--neon-blue);
+}
+.typing i:nth-child(2) { animation-delay: 0.15s; }
+.typing i:nth-child(3) { animation-delay: 0.3s; }
+@keyframes tp { 0%, 100% { transform: translateY(0); opacity: 0.3; } 50% { transform: translateY(-6px); opacity: 1; } }
+
+.suggest { display: flex; gap: 10px; flex-wrap: wrap; padding: 16px 24px; border-top: 1px solid rgba(0, 243, 255, 0.1); }
+.suggest button {
+  font-family: var(--font-mono); font-size: 0.75rem; border: 1px solid rgba(0, 243, 255, 0.3);
+  background: rgba(0, 243, 255, 0.05); color: var(--neon-blue); padding: 8px 14px;
+  cursor: pointer; transition: all 0.3s; border-radius: 4px;
+}
+.suggest button:hover { background: var(--neon-blue); color: #000; box-shadow: 0 0 15px rgba(0, 243, 255, 0.4); transform: translateY(-2px); }
+
+.composer { display: flex; gap: 12px; padding: 20px 24px; border-top: 1px solid rgba(0, 243, 255, 0.2); background: rgba(0, 10, 20, 0.8); }
+.composer input {
+  flex: 1; background: rgba(0, 0, 0, 0.5); border: none; border-bottom: 2px solid rgba(0, 243, 255, 0.3);
+  padding: 14px 16px; font-family: var(--font-mono); font-size: 1rem; color: var(--neon-blue);
+  transition: all 0.3s; border-radius: 4px 4px 0 0;
+}
+.composer input::placeholder { color: rgba(0, 243, 255, 0.3); }
+.composer input:focus { outline: none; border-bottom-color: var(--neon-blue); box-shadow: 0 4px 20px rgba(0, 243, 255, 0.15); background: rgba(0, 0, 0, 0.8); }
+.composer .btn { border-radius: 4px; padding: 14px 20px; }
+
+.chat::-webkit-scrollbar, .chips::-webkit-scrollbar { width: 6px; }
+.chat::-webkit-scrollbar-track, .chips::-webkit-scrollbar-track { background: rgba(0,0,0,0.3); }
+.chat::-webkit-scrollbar-thumb, .chips::-webkit-scrollbar-thumb { background: rgba(0, 243, 255, 0.3); border-radius: 3px; }
+.chat::-webkit-scrollbar-thumb:hover, .chips::-webkit-scrollbar-thumb:hover { background: var(--neon-blue); }
+
+footer {
+  border-top: 1px solid rgba(0, 243, 255, 0.2); background: rgba(3, 5, 8, 0.9);
+  padding: 20px 32px; display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap;
+  font-size: 0.75rem; color: var(--text-dim); letter-spacing: 1px;
+}
+
+.reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.8s ease, transform 0.8s ease; }
+.reveal.in { opacity: 1; transform: translateY(0); }
+@keyframes slideUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+
+@media (max-width: 960px) {
+  .intro { grid-template-columns: 1fr; gap: 32px; padding-top: 40px; }
+  .workspace { grid-template-columns: 1fr; }
+  .chat { height: 400px; }
+}
+@media (max-width: 560px) {
+  .topbar { padding: 12px 16px; }
+  .wrap { padding: 0 16px; }
+  .msg-bubble { max-width: 92%; }
+}
+@media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <a class="logo" href="#"><span class="logo-badge">◈</span><span class="glow-text">КОНТЕКСТ.БЮРО</span></a>
+  <div class="top-status">
+    <span class="status-chip ok"><i class="pulse"></i>СИСТЕМА АКТИВНА</span>
+    <span class="status-chip warn">РЕЖИМ: ЛОКАЛЬНЫЙ JS</span>
+    <span class="status-chip" id="statusCount">0 ПРЕДЛОЖЕНИЙ</span>
+  </div>
+</header>
+
+<div class="wrap">
+  <section class="intro">
+    <div class="reveal">
+      <p class="kicker">// ПРОТОКОЛ АНАЛИЗА v2.0 // БЕЗ СЕРВЕРА</p>
+      <h1 class="glow-text">ЗАПРОСИ У ТЕКСТА. ЕСЛИ ЦИФРЫ <span class="hl">НЕ СОЙДУТСЯ</span>, МЫ ПОДСВЕТИМ СБОЙ.</h1>
+      <p class="lead">Загрузи .txt. Система разобьёт его на фрагменты, найдёт три ближайших к запросу и ответит строго по контексту. Логические аномалии будут выделены красным.</p>
+      <div class="intro-actions">
+        <button class="btn btn-ghost" id="demoBtn" type="button">⚡ ЗАГРУЗИТЬ ДЕМО-ДАННЫЕ</button>
+        <a class="link-arrow" href="#workspace">ПЕРЕЙТИ К РАБОТЕ ↓</a>
+      </div>
+    </div>
+    <ol class="pipeline reveal">
+      <li><b>01</b><span>Локальная загрузка .txt файла</span></li>
+      <li><b>02</b><span>Синтаксический парсинг на предложения</span></li>
+      <li><b>03</b><span>Векторный поиск (эмуляция TF-IDF)</span></li>
+      <li><b>04</b><span>Генерация ответа + детекция аномалий</span></li>
+    </ol>
+  </section>
+
+  <main class="workspace" id="workspace">
+    <section class="panel doc-panel reveal">
+      <header class="panel-head">
+        <h2><span class="panel-num">01</span>ИСТОЧНИК ДАННЫХ</h2>
+        <span id="fileName" style="color: var(--text-dim); font-size: 0.8rem; font-family: var(--font-mono);">ФАЙЛ НЕ ВЫБРАН</span>
+      </header>
+
+      <label class="dropzone" id="dropzone">
+        <input type="file" id="fileInput" accept=".txt" hidden>
+        <div class="dz-icon">⇪</div>
+        <div class="dz-text" id="dzText"><b>ПЕРЕТАЩИ .txt СЮДА</b><span>или кликни для выбора файла</span></div>
+      </label>
+
+      <div class="stats" id="stats" hidden>
+        <div class="stat"><b id="stSent">0</b><span>ФРАГМЕНТОВ</span></div>
+        <div class="stat"><b id="stWords">0</b><span>СЛОВ</span></div>
+        <div class="stat"><b id="stChars">0</b><span>СИМВОЛОВ</span></div>
+      </div>
+
+      <div class="chips" id="chips"></div>
+      <p class="chips-note" id="chipsNote"></p>
+
+      <button class="btn btn-analyze" id="analyzeBtn" type="button" disabled>◈ АНАЛИЗ ЛОГИКИ</button>
+
+      <div class="scan" id="scan" hidden>
+        <div class="scan-bar"><i></i></div>
+        <span style="font-size: 0.75rem; color: var(--neon-blue);" id="scanLabel">СКАНИРОВАНИЕ МАССИВА…</span>
+      </div>
+
+      <div id="issues"></div>
+    </section>
+
+    <section class="panel chat-panel reveal">
+      <header class="panel-head">
+        <h2><span class="panel-num">02</span>НЕЙРО-ДИАЛОГ</h2>
+        <span class="mode-badge" id="modeBadge">OFFLINE MODE</span>
+      </header>
+      <div class="chat" id="chat"></div>
+      <div class="suggest" id="suggest" hidden></div>
+      <form class="composer" id="composer">
+        <input type="text" id="questionInput" placeholder="ВВЕДИТЕ ЗАПРОС К СИСТЕМЕ…" autocomplete="off">
+        <button class="btn" type="submit">ОТПРАВИТЬ →</button>
+      </form>
+    </section>
+  </main>
+</div>
+
+<footer>
+  <span>КОНТЕКСТ.БЮРО // TRON PROTOCOL</span>
+  <span>ДАННЫЕ НЕ ПОКИДАЮТ ЛОКАЛЬНУЮ СРЕДУ // ИНТЕРНЕТ НЕ ТРЕБУЕТСЯ</span>
+</footer>
+
+<script>
+// =========================================================
+// ЯДРО СИСТЕМЫ (ИСПРАВЛЕНО)
+// =========================================================
+const DEMO_TEXT = `Полярная станция «Аврора» стояла в двухстах километрах от материка.
+На станции размещалось 12 членов экипажа.
+На станции размещалось 14 членов экипажа.
+Повар сварил на обед густой суп.
+На десерт подавали ягодный компот.
+Утром радист записал температуру: −42 градуса.
+К полудню температура поднялась до −35 градусов.
+Механик починил генератор за 3 часа.
+На станцию привезли 30 банок тушёнки, 20 пакетов крупы и 10 буханок хлеба.
+Всего на станцию привезли 65 продуктов.
+Капитан вёл судовой журнал каждый день.
+В пятницу началась сильная метель.
+Метель длилась 6 часов.
+Скорость ветра достигала 25 метров в секунду.
+Ночью в небе было видно полярное сияние.`;
+
+const state = { sentences: [], filename: null, raw: '' };
+const STOPWORDS = new Set(('и в во не что он на я с со как а то все она так его но да ты к у же вы за бы по ' +
+  'только ее мне было вот от меня еще нет о из ему теперь когда даже ну вдруг ли если ' +
+  'уже или ни быть был него до вас нибудь опять уж вам ведь там потом себя ничего ей ' +
+  'может они тут где есть надо ней для мы тебя их чем была сам чтоб без будто чего раз ' +
+  'тоже себе под будет ж тогда кто этот этого опять такой совсем').split(' '));
+const TIME_MARKERS = new Set(['утро','утра','утром','день','дня','днем','вечер','вечера','вечером','ночь','ночи','ночью','полдень','полудню','полдня','понедельник','вторник','среда','четверг','пятница','суббота','воскресенье','год','года','году','лет']);
+const TOTAL_RE = /\b(всего|итого|суммарно|в\s+сумме|в\s+общем)\b/i;
+const NUM_RE = /[-−]?\d+(?:[.,]\d+)?/g;
+const ABBR_RE = /\b(г|ул|др|т\.д|т\.е|руб|коп|см|кг|км|ч|мин|млн|млрд|ст|проф|им)\./gi;
+
+const $ = (s) => document.querySelector(s);
+const chatEl = $('#chat'), input = $('#questionInput'), modeBadge = $('#modeBadge');
+const dropzone = $('#dropzone'), fileInput = $('#fileInput'), dzText = $('#dzText');
+const statsEl = $('#stats'), chipsEl = $('#chips'), chipsNote = $('#chipsNote');
+const analyzeBtn = $('#analyzeBtn'), scanEl = $('#scan'), scanLabel = $('#scanLabel');
+const issuesEl = $('#issues'), suggestEl = $('#suggest');
+const fileNameEl = $('#fileName'), statusCount = $('#statusCount');
+
+const KIND = { sum: 'СУММА НЕ СХОДИТСЯ', mismatch: 'КОНФЛИКТ ДАННЫХ', duplicate: 'ДУБЛИКАТ С РАЗНЫМИ ЧИСЛАМИ' };
+
+function esc(s) { return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+function now() { return new Date().toLocaleTimeString('ru-RU', {hour:'2-digit', minute:'2-digit'}); }
+function tokenize(s) { return (s.toLowerCase().match(/[а-яёa-z0-9\-]+/g) || []); }
+function contentWords(s) { return new Set(tokenize(s).filter(t => t.length > 2 && !STOPWORDS.has(t) && !/\d/.test(t))); }
+function extractNumbers(s) { return (s.match(NUM_RE) || []).map(n => parseFloat(n.replace(',', '.').replace('−', '-'))).filter(n => !isNaN(n)); }
+function fmtNum(x) { return Number.isInteger(x) ? String(x) : String(x); }
+function fmts(ns) { return ns.map(fmtNum).join(', '); }
+function isYear(x) { return x >= 1900 && x <= 2100; }
+function pct(x) { return `${Math.round(x * 100)}%`; }
+
+function splitSentences(text) {
+  let safe = text.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
+  safe = safe.replace(/[ \t]+/g, ' ');
+  safe = safe.replace(ABBR_RE, m => m.replace('.', '\u0000'));
+  safe = safe.replace(/(\d)[.,](\d)/g, '$1\u0001$2');
+  const parts = safe.split(/(?<=[.!?…])\s+/);
+  return parts.map(p => p.replace(/\u0000/g, '.').replace(/\u0001/g, '.').trim().replace(/^[«»"']+|[«»"']+$/g, '')).filter(p => p.length >= 2);
+}
+
+function getScore(query, sentence) {
+  const qTokens = tokenize(query).filter(t => !STOPWORDS.has(t) && !/\d/.test(t));
+  const sTokens = tokenize(sentence).filter(t => !STOPWORDS.has(t) && !/\d/.test(t));
+  if (qTokens.length === 0 || sTokens.length === 0) return 0;
+  let intersection = 0;
+  const qSet = new Set(qTokens);
+  sTokens.forEach(t => { if (qSet.has(t)) intersection++; });
+  return intersection / (Math.sqrt(qTokens.length) * Math.sqrt(sTokens.length));
+}
+
+function findSimilar(question, sentences, top = 3) {
+  const scored = sentences.map((s, i) => ({ text: s, score: getScore(question, s), index: i }));
+  scored.sort((a, b) => b.score - a.score);
+  return scored.slice(0, top).filter(c => c.score > 0.01);
+}
+
+function flagNumbers(text, nums) {
+  let out = esc(text);
+  const uniqueNums = [...new Set(nums)].sort((a, b) => b.length - a.length);
+  uniqueNums.forEach(num => {
+    const regex = new RegExp(`(?<![\\w.])(${num.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})(?![\\w.])`, 'g');
+    out = out.replace(regex, '<span class="flag">$1</span>');
+  });
+  return out;
+}
+
+function detectConflicts(sentences) {
+  const issues = [], seen = new Set(), sumPairs = new Set();
+  const data = sentences.map(s => {
+    const toks = tokenize(s);
+    return { nums: extractNumbers(s), words: contentWords(s), toks: new Set(toks), time: toks.some(t => TIME_MARKERS.has(t)), total: TOTAL_RE.test(s.toLowerCase()) };
+  });
+
+  function add(i, j, kind, comment, numsA, numsB, bText = null) {
+    if (seen.has(`${i}-${j}`)) return;
+    seen.add(`${i}-${j}`);
+    issues.push({ kind, comment, a: sentences[i], b: bText || sentences[j], numsA, numsB });
+  }
+
+  for (let i = 0; i < data.length; i++) {
+    const d = data[i];
+    if (!d.total || d.nums.length === 0) continue;
+    const total = d.nums[0];
+    const partIdx = [];
+    for (let j = 0; j < data.length; j++) {
+      if (i !== j && data[j].nums.length > 0 && !data[j].total) {
+        const intersection = [...d.words].filter(w => data[j].words.has(w));
+        if (intersection.length > 0) partIdx.push(j);
+      }
+    }
+    const parts = partIdx.flatMap(j => data[j].nums);
+    if (parts.length >= 2 && Math.abs(parts.reduce((a, b) => a + b, 0) - total) > 1e-9) {
+      partIdx.forEach(j => sumPairs.add(`${Math.min(i,j)}-${Math.max(i,j)}`));
+      add(i, partIdx[0], 'sum', `Заявлено «всего ${fmtNum(total)}», но сумма частей: ${parts.map(fmtNum).join(' + ')} = ${fmtNum(parts.reduce((a,b)=>a+b,0))}.`, [fmtNum(total)], parts.map(fmtNum), partIdx.map(j => sentences[j]).join(' | '));
+    }
+  }
+
+  for (let i = 0; i < sentences.length; i++) {
+    for (let j = i + 1; j < sentences.length; j++) {
+      if (seen.has(`${i}-${j}`) || sumPairs.has(`${i}-${j}`)) continue;
+      const di = data[i], dj = data[j];
+      if (di.nums.length === 0 || dj.nums.length === 0) continue;
+      if (di.time || dj.time) continue;
+      if (di.nums.some(isYear) || dj.nums.some(isYear)) continue;
+      const inter = [...di.toks].filter(t => dj.toks.has(t)).length;
+      const ratio = inter / Math.max(1, Math.min(di.toks.size, dj.toks.size));
+      const commonWords = [...di.words].filter(w => dj.words.has(w));
+      if (ratio >= 0.6 && JSON.stringify(di.nums.sort()) !== JSON.stringify(dj.nums.sort())) {
+        add(i, j, 'duplicate', `Фрагменты почти идентичны, но числа расходятся: ${fmts(di.nums)} против ${fmts(dj.nums)}.`, di.nums.map(fmtNum), dj.nums.map(fmtNum));
+      } else if (commonWords.length >= 2 && di.nums.some(n => !dj.nums.includes(n))) {
+        add(i, j, 'mismatch', `Один контекст (${commonWords.join(', ')}), но разные данные: ${fmts(di.nums)} против ${fmts(dj.nums)}.`, di.nums.map(fmtNum), dj.nums.map(fmtNum));
+      }
+    }
+  }
+  return issues.map(iss => ({ ...iss, commentHtml: flagNumbers(iss.comment, [...iss.numsA, ...iss.numsB]) }));
+}
+
+let typingEl = null;
+function addMsg(role, htmlBody, opts = {}) {
+  const wrap = document.createElement('div');
+  wrap.className = 'msg ' + role;
+  const avatar = role === 'user' ? 'USER' : 'SYS';
+  let ctxHtml = '';
+  if (opts.contexts && opts.contexts.length) {
+    ctxHtml = '<div class="ctx-list">' + opts.contexts.map((c, i) =>
+      `<div class="ctx-chip" style="animation-delay:${i * 90}ms"><b>${pct(c.score)}</b><span>${esc(c.text)}</span></div>`
+    ).join('') + '</div>';
+  }
+  wrap.innerHTML = `
+    <div class="msg-avatar">${avatar}</div>
+    <div class="msg-bubble">
+      <div class="msg-meta">${esc(opts.meta || (role === 'user' ? 'ЗАПРОС' : 'ОБРАБОТКА'))} // ${now()}</div>
+      ${ctxHtml}
+      <div class="msg-text">${htmlBody}</div>
+    </div>`;
+  chatEl.appendChild(wrap);
+  chatEl.scrollTop = chatEl.scrollHeight;
+  return wrap;
+}
+function showTyping() { typingEl = addMsg('bot', '<span class="typing"><i></i><i></i><i></i></span>', {meta: 'ГЕНЕРАЦИЯ'}); }
+function hideTyping() { if (typingEl) { typingEl.remove(); typingEl = null; } }
+
+function animateCount(el, to) {
+  const t0 = performance.now(), dur = 700;
+  (function tick(t) {
+    const p = Math.min(1, (t - t0) / dur);
+    el.textContent = Math.round(to * (1 - Math.pow(1 - p, 3)));
+    if (p < 1) requestAnimationFrame(tick);
+  })(t0);
+}
+
+function topKeywords(sentences) {
+  const cnt = {};
+  sentences.forEach(s => tokenize(s).filter(w => w.length > 3 && !STOPWORDS.has(w) && !/^\d+$/.test(w)).forEach(w => cnt[w] = (cnt[w] || 0) + 1));
+  return Object.entries(cnt).sort((a, b) => b[1] - a[1]).slice(0, 3).map(e => e[0]);
+}
+
+function onDocumentLoaded(text, filename) {
+  try {
+    state.raw = text;
+    state.filename = filename;
+    state.sentences = splitSentences(text);
+    
+    fileNameEl.textContent = filename.toUpperCase();
+    dropzone.classList.add('loaded');
+    dzText.innerHTML = `<b>${esc(filename)}</b><span>НАЖМИТЕ ДЛЯ ЗАМЕНЫ ДАННЫХ</span>`;
+    statsEl.hidden = false;
+    animateCount($('#stSent'), state.sentences.length);
+    animateCount($('#stWords'), text.split(/\s+/).length);
+    animateCount($('#stChars'), text.length);
+
+    chipsEl.innerHTML = '';
+    state.sentences.slice(0, 8).forEach((s, i) => {
+      const c = document.createElement('div');
+      c.className = 'chip';
+      c.style.animationDelay = (i * 70) + 'ms';
+      c.innerHTML = `<i>[${String(i + 1).padStart(2, '0')}]</i><span>${esc(s)}</span>`;
+      chipsEl.appendChild(c);
+    });
+    chipsNote.textContent = state.sentences.length > 8 ? `…И ЕЩЁ ${state.sentences.length - 8} ФРАГМЕНТОВ В ПАМЯТИ` : 'ВСЕ ДАННЫЕ ЗАГРУЖЕНЫ ↑';
+
+    suggestEl.innerHTML = '';
+    topKeywords(state.sentences).forEach(w => {
+      const b = document.createElement('button');
+      b.textContent = `ДАННЫЕ ПО: "${w.toUpperCase()}"`;
+      b.onclick = () => askQuestion(b.textContent);
+      suggestEl.appendChild(b);
+    });
+    const contra = document.createElement('button');
+    contra.textContent = 'ПРОВЕРИТЬ НА ПРОТИВОРЕЧИЯ';
+    contra.onclick = () => askQuestion(contra.textContent);
+    suggestEl.appendChild(contra);
+    suggestEl.hidden = false;
+
+    issuesEl.innerHTML = '';
+    analyzeBtn.disabled = false;
+    statusCount.textContent = state.sentences.length + ' ФРАГМЕНТОВ';
+    addMsg('bot', `ФАЙЛ <b>${esc(filename)}</b> ПРИНЯТ. ТЕКСТ РАЗБИТ НА <b>${state.sentences.length}</b> ФРАГМЕНТОВ. ОЖИДАЮ ЗАПРОСА ДЛЯ ПОИСКА И АНАЛИЗА.`, {meta: 'СИСТЕМА'});
+  } catch (err) {
+    console.error('Ошибка загрузки документа:', err);
+    addMsg('bot', `⚠️ ОШИБКА ПРИ ОБРАБОТКЕ ДАННЫХ: ${esc(err.message)}`, {meta: 'СИСТЕМА'});
+  }
+}
+
+function askQuestion(q) {
+  if (!q || !q.trim()) return;
+  addMsg('user', esc(q));
+  input.value = '';
+  showTyping();
+
+  setTimeout(() => {
+    hideTyping();
+    if (!state.sentences.length) {
+      addMsg('bot', 'ОШИБКА: БАЗА ДАННЫХ ПУСТА. ЗАГРУЗИТЕ .txt ФАЙЛ ИЛИ НАЖМИТЕ «ДЕМО-ДАННЫЕ».', {meta: 'СИСТЕМА'});
+      return;
+    }
+
+    const ql = q.toLowerCase();
+    if (/противореч|несостыков|не\s+сходят|логическ|проверить/.test(ql)) {
+      const issues = detectConflicts(state.sentences);
+      if (!issues.length) {
+        addMsg('bot', 'СКАНИРОВАНИЕ ЗАВЕРШЕНО: ЯВНЫХ ЧИСЛОВЫХ АНОМАЛИЙ НЕ ОБНАРУЖЕНО.', {meta: 'АНАЛИЗ'});
+        return;
+      }
+      const parts = [`ОБНАРУЖЕНО <b>${issues.length}</b> ПОДОЗРИТЕЛЬНЫХ СОВПАДЕНИЙ:`];
+      parts.push(...issues.map((iss, i) => `<span class="flag">!</span> ${iss.commentHtml}`));
+      parts.push('ДЕТАЛЬНЫЙ ОТЧЁТ ДОСТУПЕН ЧЕРЕЗ КНОПКУ «АНАЛИЗ ЛОГИКИ».');
+      addMsg('bot', parts.join('<br>'), {meta: 'АНАЛИЗ'});
+      return;
+    }
+
+    const m = ql.match(/сколько\s+(?:в\s+(?:тексте|файле|нём)\s+)?(предложени\w+|слов\w+|символ\w+)/);
+    if (m) {
+      const word = m[1];
+      const n = word.startsWith('пред') ? state.sentences.length : word.startsWith('слов') ? state.raw.split(/\s+/).length : state.raw.length;
+      addMsg('bot', `ОБЪЁМ ДАННЫХ В <b>«${esc(state.filename)}»</b>: <b>${n}</b> ${word}.`, {meta: 'СТАТИСТИКА'});
+      return;
+    }
+
+    const contexts = findSimilar(q, state.sentences);
+    if (!contexts.length) {
+      addMsg('bot', 'СОВПАДЕНИЙ НЕ НАЙДЕНО. РЕКОМЕНДУЕТСЯ ИЗМЕНИТЬ ФОРМУЛИРОВКУ ЗАПРОСА.', {meta: 'ПОИСК'});
+      return;
+    }
+
+    const best = contexts[0];
+    const nums = extractNumbers(best.text);
+    const parts = [];
+    if (/сколько|какое число|какая цифра/.test(ql) && nums.length > 0) {
+      parts.push(`<b>ИЗВЛЕЧЁННЫЕ ДАННЫЕ:</b> ${fmts(nums)}.`);
+    }
+    parts.push(`НАИБОЛЕЕ РЕЛЕВАНТНЫЙ ФРАГМЕНТ (СХОЖЕСТЬ ${pct(best.score)}):<br>«${esc(best.text)}»`);
+    if (contexts.length > 1) {
+      parts.push('<br>ДОПОЛНИТЕЛЬНЫЙ КОНТЕКСТ: ' + contexts.slice(1).map(c => `«${esc(c.text)}»`).join(' • '));
+    }
+    
+    const conflicts = detectConflicts(contexts.map(c => c.text));
+    if (conflicts.length > 0) {
+      parts.push(`<br><span class="glow-red">⚠️ ОБНАРУЖЕНА ЛОГИЧЕСКАЯ ОШИБКА:</span> ${conflicts[0].commentHtml}`);
+    } else {
+      parts.push('<br>ПРЯМЫХ ПРОТИВОРЕЧИЙ В ВЫБРАННЫХ ФРАГМЕНТАХ НЕ ВЫЯВЛЕНО.');
+    }
+    parts.push('<br><span style="color: var(--text-dim); font-size: 0.8rem;">[РЕЖИМ ЭМУЛЯЦИИ: ОТВЕТ СФОРМИРОВАН НА ОСНОВЕ ВЕКТОРНОГО ПОИСКА]</span>');
+    
+    addMsg('bot', parts.join(''), { contexts, meta: 'НЕЙРО-ЯДРО // TF-IDF' });
+  }, 600 + Math.random() * 400);
+}
+
+function renderIssues(issues) {
+  issuesEl.innerHTML = '';
+  if (!issues.length) {
+    issuesEl.innerHTML = '<div class="ok-banner">✅ ЧИСЛОВЫХ АНОМАЛИЙ НЕ НАЙДЕНО. МАССИВ КРИСТАЛЛЬНО ЧИСТ.</div>';
+    return;
+  }
+  issues.forEach((iss, i) => {
+    const d = document.createElement('div');
+    d.className = 'issue';
+    d.style.animationDelay = (i * 120) + 'ms';
+    d.innerHTML = `
+      <div class="issue-head">СБОЙ #${i + 1} :: ${esc(KIND[iss.kind] || iss.kind)}</div>
+      <p>${iss.commentHtml}</p>
+      <blockquote>«${esc(iss.a)}»</blockquote>
+      <blockquote>«${esc(iss.b)}»</blockquote>`;
+    issuesEl.appendChild(d);
+  });
+}
+
+$('#composer').addEventListener('submit', e => { e.preventDefault(); askQuestion(input.value); });
+
+fileInput.addEventListener('change', () => {
+  const file = fileInput.files[0];
+  if (!file) return;
+  if (!file.name.toLowerCase().endsWith('.txt')) {
+    addMsg('bot', 'ОШИБКА ФОРМАТА: ПРИНИМАЮТСЯ ТОЛЬКО ФАЙЛЫ <b>.txt</b>');
+    return;
+  }
+  const reader = new FileReader();
+  reader.onload = (e) => onDocumentLoaded(e.target.result, file.name);
+  reader.readAsText(file);
+});
+
+['dragenter', 'dragover'].forEach(ev => dropzone.addEventListener(ev, e => { e.preventDefault(); dropzone.classList.add('drag'); }));
+['dragleave', 'drop'].forEach(ev => dropzone.addEventListener(ev, e => { e.preventDefault(); dropzone.classList.remove('drag'); }));
+dropzone.addEventListener('drop', e => {
+  const file = e.dataTransfer.files[0];
+  if (file && file.name.toLowerCase().endsWith('.txt')) {
+    const reader = new FileReader();
+    reader.onload = (ev) => onDocumentLoaded(ev.target.result, file.name);
+    reader.readAsText(file);
+  }
+});
+
+$('#demoBtn').addEventListener('click', () => {
+  onDocumentLoaded(DEMO_TEXT, 'demo_polar_protocol.txt');
+});
+
+analyzeBtn.addEventListener('click', () => {
+  if (!state.sentences.length) return;
+  analyzeBtn.disabled = true;
+  issuesEl.innerHTML = '';
+  scanEl.hidden = false;
+  const total = state.sentences.length;
+  let i = 0;
+  const timer = setInterval(() => {
+    i = Math.min(total, i + Math.max(1, Math.round(total / 20)));
+    scanLabel.textContent = `СКАНИРОВАНИЕ: ${i}/${total} ФРАГМЕНТОВ`;
+  }, 60);
+  
+  setTimeout(() => {
+    clearInterval(timer);
+    scanLabel.textContent = `СКАНИРОВАНИЕ ЗАВЕРШЕНО: ${total} ФРАГМЕНТОВ ПРОВЕРЕНО`;
+    const issues = detectConflicts(state.sentences);
+    renderIssues(issues);
+    addMsg('bot', issues.length 
+      ? `АНАЛИЗ ЗАВЕРШЁН: ОБНАРУЖЕНО <b>${issues.length}</b> СБОЕВ. ДЕТАЛИ В ЛЕВОЙ ПАНЕЛИ. <span class="flag">КРАСНЫМ</span> ВЫДЕЛЕНЫ РАСХОЖДЕНИЯ.`
+      : 'АНАЛИЗ ЗАВЕРШЁН: ЧИСЛОВЫХ АНОМАЛИЙ НЕ ОБНАРУЖЕНО. СИСТЕМА СТАБИЛЬНА.', {meta: 'ГЛУБОКИЙ АНАЛИЗ'});
+    setTimeout(() => { scanEl.hidden = true; analyzeBtn.disabled = false; }, 700);
+  }, 1200 + Math.random() * 500);
+});
+
+const io = new IntersectionObserver(es => es.forEach(e => e.isIntersecting && e.target.classList.add('in')), {threshold: .12});
+document.querySelectorAll('.reveal').forEach(n => io.observe(n));
+
+setTimeout(() => {
+  addMsg('bot', 'СИСТЕМА <b>КОНТЕКСТ.БЮРО</b> ИНИЦИАЛИЗИРОВАНА. ЗАГРУЗИТЕ .txt ФАЙЛ ИЛИ АКТИВИРУЙТЕ ДЕМО-ПРОТОКОЛ. ВСЕ НЕСОСТЫКОВКИ БУДУТ ПОДСВЕЧЕНЫ <span class="flag">КРАСНЫМ</span>.');
+}, 300);
+</script>
+</body>
+</html>
