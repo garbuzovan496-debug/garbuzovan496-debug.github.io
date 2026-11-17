@@ -43,7 +43,7 @@
 
 ## 🚀 Как пользоваться
 
-1. Откройте https://garbuzovan496-debug.github.io
+1. Откройте https://garbuzovan496-debug.github.io/kontekst/
 2. Нажмите **«Выбрать .txt файл»** и загрузите текстовый документ.
 3. Дождитесь сканирования — система разобьёт текст на фрагменты.
 4. Введите запрос в поле нейро-диалога.
@@ -58,7 +58,9 @@
 ## 📞 Контакты
 
 **Разработчик:** Наталья Гарбузова
-**GitHub:** [garbuzovan496-debug](garbuzovan496-debug.github.io/kontekst/)
+**Демо проекта:** [Открыть Контекст.Бюро](https://github.io)
+**GitHub:** [garbuzovan496-debug](https://github.com)
+
 
 ## 📝 Лицензия
 
