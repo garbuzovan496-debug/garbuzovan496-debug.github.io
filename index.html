@@ -62,7 +62,7 @@
   .btn-secondary:hover{background:#E8EAED}
   .btn-secondary.copied{background:#ECFDF5;color:#059669;border-color:#A7F3D0}
 
-  /* === Mockup: AI-Юрист ЖКХ (blue) === */
+  /* === Mockup Styles === */
   .mk-zhkh{background:linear-gradient(180deg,#1E40AF,#2563EB);padding:8px;height:100%;display:flex;flex-direction:column;gap:6px}
   .mk-zhkh .h{color:#fff;font-size:9px;font-weight:700;padding:4px 8px;display:flex;justify-content:space-between;align-items:center}
   .mk-zhkh .chat{background:rgba(255,255,255,.96);border-radius:7px;padding:7px;flex:1;display:flex;flex-direction:column;gap:4px}
@@ -72,7 +72,6 @@
   .mk-zhkh .btns{display:flex;gap:3px;flex-wrap:wrap}
   .mk-zhkh .qb{font-size:7px;padding:2px 6px;border-radius:4px;background:#2563EB;color:#fff;font-weight:600}
 
-  /* === Mockup: Контекст.Бюро (dark) === */
   .mk-audit{background:#0F172A;padding:8px;height:100%;display:flex;flex-direction:column;gap:4px}
   .mk-audit .h{color:#94A3B8;font-size:8px;padding:3px 6px;display:flex;justify-content:space-between;border-bottom:1px solid #1E293B}
   .mk-audit .doc{flex:1;background:#1E293B;border-radius:5px;padding:6px;display:flex;flex-direction:column;gap:3px}
@@ -80,7 +79,6 @@
   .mk-audit .ln-r{background:rgba(220,38,38,.25);border:1px solid rgba(220,38,38,.4)}
   .mk-audit .flag{font-size:7px;color:#FCA5A5;padding:1px 5px;background:rgba(220,38,38,.15);border-radius:3px;width:fit-content;font-weight:600}
 
-  /* === Mockup: Dashboard === */
   .mk-dash{background:#F8FAFC;padding:8px;height:100%;display:flex;flex-direction:column;gap:5px}
   .mk-dash .h{font-size:8px;color:#64748B;padding:2px 4px;font-weight:600}
   .mk-dash .kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:4px}
@@ -90,7 +88,6 @@
   .mk-dash .chart{background:#fff;border:1px solid #E2E8F0;border-radius:5px;padding:6px;flex:1;display:flex;align-items:flex-end;gap:3px}
   .mk-dash .bar{flex:1;border-radius:2px 2px 0 0}
 
-  /* === Mockup: Sorter === */
   .mk-sort{background:#F8FAFC;padding:8px;height:100%;display:flex;gap:6px}
   .mk-sort .col{flex:1;display:flex;flex-direction:column;gap:3px}
   .mk-sort .ct{font-size:7px;font-weight:700;color:#64748B;padding:2px 4px}
@@ -99,7 +96,6 @@
   .mk-sort .em.spam{border-color:#D1D5DB;background:#F9FAFB;opacity:.55}
   .mk-sort .arr{display:flex;flex-direction:column;justify-content:center;gap:9px;font-size:11px;color:#CBD5E1}
 
-  /* === Mockup: Calculator === */
   .mk-calc{background:#fff;padding:8px;height:100%;display:flex;flex-direction:column;gap:5px}
   .mk-calc .h{background:#0D9488;color:#fff;font-size:8px;font-weight:700;padding:4px 8px;border-radius:5px}
   .mk-calc .f{display:flex;justify-content:space-between;padding:4px 7px;background:#F0FDFA;border-radius:4px;font-size:8px;border:1px solid #CCFBF1}
@@ -110,7 +106,6 @@
   .mk-calc .rv{font-size:15px;font-weight:800}
   .mk-calc .tg{display:flex;align-items:center;justify-content:center;gap:4px;font-size:7px;color:#2563EB;padding:3px;border:1px dashed #93C5FD;border-radius:4px;font-weight:600}
 
-  /* === Mockup: Article === */
   .mk-art{background:#fff;padding:10px;height:100%;display:flex;flex-direction:column;gap:4px}
   .mk-art .tag{font-size:6px;color:#7C3AED;font-weight:700}
   .mk-art .t{font-size:10px;font-weight:800;line-height:1.2;color:#1A1D22}
@@ -121,271 +116,4 @@
   .mk-art .g{background:#ECFDF5;color:#059669}
   .mk-art .p{background:#F5F3FF;color:#7C3AED}
 
-  .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(120px);background:#1A1D22;color:#fff;padding:11px 20px;border-radius:10px;font-size:14px;font-weight:500;box-shadow:0 10px 30px rgba(0,0,0,.25);transition:transform .3s cubic-bezier(.2,.7,.2,1);z-index:1000;display:flex;align-items:center;gap:8px}
-  .toast.show{transform:translateX(-50%) translateY(0)}
-  .toast-ic{width:18px;height:18px;border-radius:50%;background:#059669;display:flex;align-items:center;justify-content:center;font-size:11px;color:#fff}
-
-  .footer{text-align:center;padding:20px;font-size:13px;color:var(--light);border-top:1px solid var(--border);background:#fff}
-
-  @media(max-width:900px){.grid{grid-template-columns:repeat(2,1fr)}}
-  @media(max-width:640px){.grid{grid-template-columns:1fr}.main{padding:24px 16px 40px}.catalog-title{font-size:24px}.header-inner{padding:0 16px}}
-</style>
-</head>
-<body>
-
-<header class="page-header">
-  <div class="header-inner">
-    <div class="logo">
-      <div class="logo-icon">A</div>
-      <span>AI / WEB / AUTOMATION</span>
-    </div>
-    <div class="header-meta">Каталог решений · 6 проектов</div>
-  </div>
-</header>
-
-<main class="main">
-  <h1 class="catalog-title">Каталог решений</h1>
-  <p class="catalog-subtitle">Готовые ИИ-инструменты и веб-сервисы под ключ. Каждый проект можно открыть в демо или скопировать ссылку для заказа.</p>
-
-  <div class="grid">
-
-    <!-- Card 1 — ссылка: https://github.io -->
-    <article class="card">
-      <div class="preview">
-        <div class="preview-number">01</div>
-        <div class="mk-zhkh">
-          <div class="h"><span>AI-Юрист ЖКХ</span><span style="font-size:7px">● online</span></div>
-          <div class="chat">
-            <div class="b bot">Выберите тему вопроса:</div>
-            <div class="btns"><span class="qb">Перерасчёт</span><span class="qb">Ремонт</span><span class="qb">Долги</span></div>
-            <div class="b usr">Не пришла квитанция</div>
-            <div class="b bot">Ст. 155 ЖК РФ → заявка в УК ✓</div>
-          </div>
-        </div>
-      </div>
-      <div class="card-content">
-        <span class="badge badge-blue">ЖКХ и Юристы</span>
-        <h3 class="card-title">Консультант кнопками 24/7</h3>
-        <ul class="bullets">
-          <li>Быстрые кнопки частых проблем</li>
-          <li>Ответы со ссылками на статьи ЖК РФ</li>
-          <li>Сбор заявок без нагрузки на юристов</li>
-        </ul>
-        <div class="card-buttons">
-          <button class="btn btn-primary" onclick="openDemo('https://github.io')">Открыть демо</button>
-          <button class="btn btn-secondary" onclick="copyLink('https://github.io', this)">Скопировать ссылку</button>
-        </div>
-      </div>
-    </article>
-
-    <!-- Card 2 — ссылка: https://github.io -->
-    <article class="card">
-      <div class="preview">
-        <div class="preview-number">02</div>
-        <div class="mk-audit">
-          <div class="h"><span>Контекст.Бюро</span><span style="color:#FCA5A5">2 ошибки</span></div>
-          <div class="doc">
-            <div class="ln"></div>
-            <div class="ln ln-r"></div>
-            <div class="flag">! Цена: 000 ₽</div>
-            <div class="ln"></div>
-            <div class="ln ln-r"></div>
-            <div class="flag">! Дата: 15.03.2025</div>
-            <div class="ln"></div>
-          </div>
-        </div>
-      </div>
-      <div class="card-content">
-        <span class="badge badge-dark">Договоры и Финансы</span>
-        <h3 class="card-title">Проверка цифр офлайн</h3>
-        <ul class="bullets">
-          <li>Поиск сбоев в цифрах и датах с красной подсветкой</li>
-          <li>Работа 100% в браузере без интернета</li>
-          <li>Полная защита коммерческой тайны</li>
-        </ul>
-        <div class="card-buttons">
-          <button class="btn btn-primary" onclick="openDemo('https://github.io')">Открыть демо</button>
-          <button class="btn btn-secondary" onclick="copyLink('https://github.io', this)">Скопировать ссылку</button>
-        </div>
-      </div>
-    </article>
-
-    <!-- Card 3 — ссылка: https://github.com -->
-    <article class="card">
-      <div class="preview preview-light">
-        <div class="preview-number">03</div>
-        <div class="mk-dash">
-          <div class="h">Дашборд продаж · DataLens</div>
-          <div class="kpis">
-            <div class="kpi"><div class="kl">Доход</div><div class="kv" style="color:#059669">1.21М</div></div>
-            <div class="kpi"><div class="kl">Расход</div><div class="kv" style="color:#EA580C">389К</div></div>
-            <div class="kpi"><div class="kl">ROI</div><div class="kv" style="color:#059669">312%</div></div>
-          </div>
-          <div class="chart">
-            <div class="bar" style="height:35%;background:#059669"></div>
-            <div class="bar" style="height:50%;background:#059669"></div>
-            <div class="bar" style="height:42%;background:#059669"></div>
-            <div class="bar" style="height:65%;background:#059669"></div>
-            <div class="bar" style="height:80%;background:#059669"></div>
-            <div class="bar" style="height:95%;background:#10B981"></div>
-          </div>
-        </div>
-      </div>
-      <div class="card-content">
-        <span class="badge badge-green">Продажи и Реклама</span>
-        <h3 class="card-title">Вся прибыль на одном экране</h3>
-        <ul class="bullets">
-          <li>Автоматическая сводка из Яндекс Метрики и CRM</li>
-          <li>Контроль окупаемости рекламы за 5 секунд</li>
-          <li>Понятные фильтры по периодам и менеджерам</li>
-        </ul>
-        <div class="card-buttons">
-          <button class="btn btn-primary" onclick="openDemo('https://github.com')">Открыть демо</button>
-          <button class="btn btn-secondary" onclick="copyLink('https://github.com', this)">Скопировать ссылку</button>
-        </div>
-      </div>
-    </article>
-
-    <!-- Card 4 — ссылка: https://github.com -->
-    <article class="card">
-      <div class="preview preview-light">
-        <div class="preview-number">04</div>
-        <div class="mk-sort">
-          <div class="col">
-            <div class="ct">Входящие</div>
-            <div class="em hot">Заявка на ремонт</div>
-            <div class="em spam">Акции! Скидки</div>
-            <div class="em">Повтор заявки</div>
-            <div class="em hot">Срочно: расчёт</div>
-          </div>
-          <div class="arr"><span>→</span><span>→</span><span>→</span><span>→</span></div>
-          <div class="col">
-            <div class="ct">Сортировка</div>
-            <div class="em hot">🔥 → Менеджер</div>
-            <div class="em spam">🗑 → Спам</div>
-            <div class="em" style="opacity:.5">📋 → Дубль</div>
-            <div class="em hot">🔥 → Менеджер</div>
-          </div>
-        </div>
-      </div>
-      <div class="card-content">
-        <span class="badge badge-orange">Отдел продаж и Поддержка</span>
-        <h3 class="card-title">Умная сортировка заявок</h3>
-        <ul class="bullets">
-          <li>Точность распознавания темы от 92%</li>
-          <li>Мгновенная передача горячих клиентов менеджеру</li>
-          <li>Отсеивание спама и дублей</li>
-        </ul>
-        <div class="card-buttons">
-          <button class="btn btn-primary" onclick="openDemo('https://github.com')">Открыть демо</button>
-          <button class="btn btn-secondary" onclick="copyLink('https://github.com', this)">Скопировать ссылку</button>
-        </div>
-      </div>
-    </article>
-
-    <!-- Card 5 — ссылка: https://github.com -->
-    <article class="card">
-      <div class="preview preview-light">
-        <div class="preview-number">05</div>
-        <div class="mk-calc">
-          <div class="h">Калькулятор сметы</div>
-          <div class="f"><span class="fl">Площадь</span><span class="fv">45 м²</span></div>
-          <div class="f"><span class="fl">Тип работ</span><span class="fv">Ремонт</span></div>
-          <div class="r"><div class="rl">Стоимость</div><div class="rv">45 000 ₽</div></div>
-          <div class="tg">↗ Отправить в Telegram</div>
-        </div>
-      </div>
-      <div class="card-content">
-        <span class="badge badge-teal">Услуги и Расчеты</span>
-        <h3 class="card-title">Липкий калькулятор сметы</h3>
-        <ul class="bullets">
-          <li>Мгновенный расчет стоимости для клиента</li>
-          <li>Передача готовой сметы сразу в Telegram-бот</li>
-          <li>Адаптация под смартфоны</li>
-        </ul>
-        <div class="card-buttons">
-          <button class="btn btn-primary" onclick="openDemo('https://github.com')">Открыть демо</button>
-          <button class="btn btn-secondary" onclick="copyLink('https://github.com', this)">Скопировать ссылку</button>
-        </div>
-      </div>
-    </article>
-
-    <!-- Card 6 — ссылка: https://github.com -->
-    <article class="card">
-      <div class="preview preview-light">
-        <div class="preview-number">06</div>
-        <div class="mk-art">
-          <div class="tag">● SEO · 4 200 запр/мес</div>
-          <div class="t">Как выбрать AI-бота для ЖКХ: чек-лист</div>
-          <div class="ln s"></div>
-          <div class="ln"></div>
-          <div class="ln"></div>
-          <div class="ln m"></div>
-          <div class="tags">
-            <span class="chip g">✓ Фактчекинг</span>
-            <span class="chip p">✓ SEO</span>
-            <span class="chip g">✓ Готово</span>
-          </div>
-        </div>
-      </div>
-      <div class="card-content">
-        <span class="badge badge-purple">Блоги и Сайты</span>
-        <h3 class="card-title">Статьи с проверкой фактов</h3>
-        <ul class="bullets">
-          <li>Глубокий анализ спроса и SEO-структура</li>
-          <li>100% фактчекинг без выдумок нейросети</li>
-          <li>Готовность к публикации</li>
-        </ul>
-        <div class="card-buttons">
-          <button class="btn btn-primary" onclick="openDemo('https://github.com')">Открыть демо</button>
-          <button class="btn btn-secondary" onclick="copyLink('https://github.com', this)">Скопировать ссылку</button>
-        </div>
-      </div>
-    </article>
-
-  </div>
-</main>
-
-<footer class="footer">Открыт к новым проектам · ответ меньше 1 часа · гарантия результата</footer>
-
-<div class="toast" id="toast">
-  <div class="toast-ic">✓</div>
-  <span>Ссылка скопирована в буфер обмена</span>
-</div>
-
-<script>
-function openDemo(url){
-  window.open(url, '_blank');
-}
-
-function copyLink(url, btn){
-  const done = () => {
-    btn.classList.add('copied');
-    btn.innerHTML = '✓ Скопировано';
-    const t = document.getElementById('toast');
-    t.classList.add('show');
-    setTimeout(() => {
-      btn.classList.remove('copied');
-      btn.innerHTML = 'Скопировать ссылку';
-      t.classList.remove('show');
-    }, 2500);
-  };
-  const fallback = () => {
-    const ta = document.createElement('textarea');
-    ta.value = url;
-    document.body.appendChild(ta);
-    ta.select();
-    document.execCommand('copy');
-    document.body.removeChild(ta);
-    done();
-  };
-  if (navigator.clipboard && navigator.clipboard.writeText) {
-    navigator.clipboard.writeText(url).then(done).catch(fallback);
-  } else {
-    fallback();
-  }
-}
-</script>
-
-</body>
-</html>
+  .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(120px);background:#1A1D22;color:#fff;padding:11px 20px;border-radius:10px;font-size:14px;font-weight:500;box-shadow:0 10px 30px rgba(0,0,0,.25);transition:transform
