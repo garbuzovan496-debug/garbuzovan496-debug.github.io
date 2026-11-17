@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI-Юрист по ЖКХ - Ваш персональный помощник 24/7</title>
+    <style>
+        /* СБРОС СТИЛЕЙ И БАЗА */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: #333; background-color: #ffffff; }
+        
+        /* HEADER */
+        header { background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%); color: white; padding: 20px 0; box-shadow: 0 2px 10px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 100; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        nav { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-size: 24px; font-weight: bold; display: flex; align-items: center; gap: 10px; }
+        .nav-links a { color: white; text-decoration: none; margin-left: 30px; transition: opacity 0.3s; font-weight: 500; }
+        .nav-links a:hover { opacity: 0.8; }
+
+        /* HERO SECTION */
+        .hero { padding: 80px 0; text-align: center; background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); }
+        .hero h1 { font-size: 48px; margin-bottom: 20px; color: #1e40af; line-height: 1.2; }
+        .hero p { font-size: 20px; color: #64748b; margin-bottom: 40px; max-width: 700px; margin-left: auto; margin-right: auto; }
+
+        /* CHAT SECTION */
+        .chat-section { padding: 60px 0; background: #f8fafc; }
+        .chat-container { max-width: 800px; margin: 0 auto; background: white; border-radius: 16px; box-shadow: 0 10px 40px rgba(0,0,0,0.08); overflow: hidden; border: 1px solid #e2e8f0; }
+        .chat-header { background: #2563eb; color: white; padding: 20px; text-align: center; }
+        .chat-header h2 { font-size: 22px; font-weight: 600; }
+        
+        .chat-messages { height: 400px; overflow-y: auto; padding: 20px; background: #f1f5f9; display: flex; flex-direction: column; gap: 15px; }
+        .message { padding: 12px 18px; border-radius: 12px; max-width: 85%; line-height: 1.5; font-size: 15px; animation: fadeIn 0.3s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .message.bot { background: white; align-self: flex-start; border-bottom-left-radius: 2px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); color: #333; }
+        .message.user { background: #2563eb; color: white; align-self: flex-end; border-bottom-right-radius: 2px; }
+
+        .quick-questions { padding: 20px; background: white; border-top: 1px solid #e2e8f0; }
+        .quick-questions h3 { margin-bottom: 15px; color: #1e40af; font-size: 16px; font-weight: 600; }
+        .question-buttons { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px; }
+        .question-btn { padding: 12px; background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 8px; cursor: pointer; transition: all 0.2s; font-size: 14px; color: #1e40af; text-align: left; }
+        .question-btn:hover { background: #2563eb; color: white; border-color: #2563eb; transform: translateY(-2px); }
+
+        .chat-input-area { padding: 20px; background: white; border-top: 1px solid #e2e8f0; display: flex; gap: 10px; }
+        .chat-input { flex: 1; padding: 14px; border: 2px solid #e2e8f0; border-radius: 8px; font-size: 16px; transition: border-color 0.3s; }
+        .chat-input:focus { outline: none; border-color: #2563eb; }
+        .send-btn { padding: 0 30px; background: #2563eb; color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 16px; font-weight: 600; transition: background 0.3s; }
+        .send-btn:hover { background: #1d4ed8; }
+
+        /* FEATURES */
+        .features { padding: 80px 0; background: white; }
+        .section-title { text-align: center; font-size: 36px; margin-bottom: 50px; color: #1e293b; font-weight: 700; }
+        .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
+        .feature-card { padding: 40px 30px; background: #f8fafc; border-radius: 16px; text-align: center; transition: transform 0.3s, box-shadow 0.3s; border: 1px solid #f1f5f9; }
+        .feature-card:hover { transform: translateY(-5px); box-shadow: 0 20px 40px rgba(0,0,0,0.08); background: white; }
+        .feature-icon { font-size: 48px; margin-bottom: 20px; display: inline-block; }
+        .feature-card h3 { font-size: 22px; margin-bottom: 15px; color: #1e40af; }
+        .feature-card p { color: #64748b; font-size: 16px; }
+
+        /* CTA */
+        .cta { padding: 80px 0; background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%); color: white; text-align: center; }
+        .cta h2 { font-size: 36px; margin-bottom: 20px; }
+        .cta p { font-size: 20px; margin-bottom: 40px; opacity: 0.9; }
+        .cta-button { display: inline-block; padding: 18px 45px; background: white; color: #2563eb; text-decoration: none; border-radius: 50px; font-size: 18px; font-weight: bold; transition: transform 0.3s, box-shadow 0.3s; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
+        .cta-button:hover { transform: scale(1.05); box-shadow: 0 6px 20px rgba(0,0,0,0.3); }
+
+        /* FOOTER */
+        footer { background: #0f172a; color: white; padding: 40px 0; text-align: center; }
+        footer p { color: #94a3b8; margin-bottom: 10px; }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 32px; }
+            .hero p { font-size: 16px; }
+            .nav-links { display: none; }
+            .question-buttons { grid-template-columns: 1fr; }
+            .chat-messages { height: 300px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">⚖️ AI-Юрист ЖКХ</div>
+                <div class="nav-links">
+                    <a href="#demo">Демо чат</a>
+                    <a href="#features">Возможности</a>
+                    <a href="#pricing">Купить решение</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h1>Ваш персональный юрист по ЖКХ 24/7</h1>
+            <p>Мгновенные юридически грамотные ответы на вопросы о квартплате, ремонте и правах жильцов. Основано на актуальном законодательстве РФ.</p>
+        </div>
+    </section>
+
+    <!-- Chat Demo Section -->
+    <section class="chat-section" id="demo">
+        <div class="container">
+            <div class="chat-container">
+                <div class="chat-header">
+                    <h2>💬 Задайте вопрос AI-юристу</h2>
+                </div>
+                
+                <div class="chat-messages" id="chatMessages">
+                    <div class="message bot">
+                        Здравствуйте! Я ваш AI-помощник по вопросам ЖКХ. <br>Выберите популярный вопрос ниже или напишите свой 👇
+                    </div>
+                </div>
+
+                <div class="quick-questions">
+                    <h3>Популярные вопросы:</h3>
+                    <div class="question-buttons">
+                        <button class="question-btn" onclick="askQuestion('Как снизить квартплату?')">💰 Как снизить квартплату?</button>
+                        <button class="question-btn" onclick="askQuestion('Кто отвечает за ремонт крыши?')">🏠 Кто чинит крышу?</button>
+                        <button class="question-btn" onclick="askQuestion('Протекает труба в квартире')">💧 Протекает труба</button>
+                        <button class="question-btn" onclick="askQuestion('Нет отопления зимой')"> Нет отопления</button>
+                        <button class="question-btn" onclick="askQuestion('Как написать претензию в УК?')">📝 Претензия в УК</button>
+                        <button class="question-btn" onclick="askQuestion('Шумные соседи ночью')">🔇 Шумные соседи</button>
+                    </div>
+                </div>
+
+                <div class="chat-input-area">
+                    <input type="text" class="chat-input" id="userInput" placeholder="Введите ваш вопрос..." onkeypress="handleKeyPress(event)">
+                    <button class="send-btn" onclick="sendMessage()">Отправить</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <div class="container">
+            <h2 class="section-title">Почему выбирают наш AI-юрист?</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h3>Мгновенные ответы</h3>
+                    <p>Получайте юридически грамотные ответы за секунды, без ожидания в очередях и на телефоне.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📚</div>
+                    <h3>База знаний ЖКХ</h3>
+                    <p>50+ проверенных ответов на основе ЖК РФ, постановлений Правительства и судебной практики.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">💼</div>
+                    <h3>Для бизнеса</h3>
+                    <p>Снижает нагрузку на диспетчеров на 70%. Работает 24/7, не болеет и не уходит в отпуск.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta" id="pricing">
+        <div class="container">
+            <h2>Хотите такой же инструмент для своего бизнеса?</h2>
+            <p>Готовое решение для УК, ТСЖ и юристов. Установка за 1 день.</p>
+            <a href="#" class="cta-button">Узнать стоимость внедрения →</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>© 2026 AI-Юрист ЖКХ. Демонстрационная версия.</p>
+            <p style="font-size: 12px; opacity: 0.6;">Не является публичной офертой. Информация носит справочный характер.</p>
+        </div>
+    </footer>
+
+    <script>
+        // === БАЗА ЗНАНИЙ (50 ВОПРОСОВ) ===
+        const zhkhDatabase = [
+            { keywords: ["квартплата", "квартальная плата", "счет", "оплата"], question: "Как снизить квартплату?", answer: "Согласно ст. 153-156 ЖК РФ, вы можете потребовать перерасчет при временном отсутствии (более 5 дней), ненадлежащем качестве услуг или изменении состава семьи. Подайте заявление в УК с приложением документов." },
+            { keywords: ["крыша", "протекает", "ремонт крыши", "кровля"], question: "Кто отвечает за ремонт протекающей крыши?", answer: "Управляющая компания обязана проводить текущий и капитальный ремонт общего имущества (ст. 161 ЖК РФ). Напишите претензию в УК, приложите фото. Срок ответа - 10 дней." },
+            { keywords: ["труба", "протекает", "затопило", "вода"], question: "Протекает труба в квартире", answer: "Если труба общедомовая (до первого вентиля) - ответственность УК. Если внутриквартирная после вентиля - ваша. Срочно вызовите аварийную службу УК." },
+            { keywords: ["отопление", "нет тепла", "холодно", "батареи"], question: "Нет отопления зимой", answer: "Нормативная температура: +18...+22°C (ГОСТ Р 51617-2014). При отклонении более чем на 3 градуса пишите претензию. За каждый час нарушения положено снижение платы на 0.15%." },
+            { keywords: ["претензия", "жалоба", "ук", "управляющая компания"], question: "Как написать претензию в УК?", answer: "Пишется в свободной форме: шапка (кому/от кого), суть проблемы, требования, дата/подпись. Отправляйте заказным письмом или вручите секретарю под роспись на вашем экземпляре." },
+            { keywords: ["соседи", "шум", "ночь", "тишина", "ремонт"], question: "Шумные соседи ночью", answer: "По закону о тишине (региональном) шум запрещен обычно с 23:00 до 7:00. Вызовите полицию (102). Для ремонта днем часто предусмотрен 'тихий час' с 13:00 до 15:00." },
+            { keywords: ["мусор", "вывоз", "контейнер", "площадка"], question: "Не вывозят мусор", answer: "УК или региональный оператор обязан вывозить ТКО по графику. При нарушении составляется акт, затем претензия. Можно требовать перерасчет за дни невывоза." },
+            { keywords: ["лифт", "не работает", "поломка", "кабина"], question: "Не работает лифт", answer: "Лифт — источник повышенной опасности. УК обязана обеспечить его работу. Аварийная служба должна реагировать круглосуточно. Если лифт не работает более суток — это основание для жалобы в ГЖИ." },
+            { keywords: ["парковка", "место", "автомобиль", "шлагбаум"], question: "Нет места для парковки во дворе", answer: "Земля под домом — общая долевая собственность. Решения о парковке принимает общее собрание собственников (ОСС). Самовольные шлагбаумы незаконны." },
+            { keywords: ["свет", "электричество", "лампочка", "подъезд", "темно"], question: "Нет света в подъезде", answer: "Освещение мест общего пользования входит в содержание жилья. Лампочки должны менять promptly. Если темно постоянно — жалоба в ГЖИ и прокуратуру." },
+            { keywords: ["тариф", "повышение", "цена", "стоимость услуг"], question: "Незаконное повышение тарифов", answer: "Тарифы на коммуналку устанавливаются государством (РЭК). УК может менять только ставку 'Содержание жилья' по решению ОСС. Требуйте протокол собрания." },
+            { keywords: ["ремонт подъезда", "покраска", "косметический"], question: "Когда должен быть ремонт подъезда?", answer: "Минимальный перечень работ (Пост. 170) предполагает покраску стен и побелку потолков раз в 5 лет. График должен быть в УК." },
+            { keywords: ["долг", "неплательщик", "взыскание", "пени"], question: "Что делать с должниками?", answer: "УК имеет право начислять пени (1/300 ставки ЦБ). При долге > 2 мес. можно ограничить услугу (например, канализацию), но нельзя отключать отопление и холодную воду." },
+            { keywords: ["перерасчет", "плохое качество", "холодная вода", "грязная"], question: "Перерасчет за некачественные услуги", answer: "Главное — зафиксировать факт. Вызовите представителя УК для составления Акта. Без акта перерасчет сделать почти невозможно." },
+            { keywords: ["общее собрание", "осс", "голосование", "протокол"], question: "Как провести общее собрание?", answer: "Инициативная группа уведомляет всех за 10 дней. Кворум — более 50% голосов от площади дома. Обязательно ведите протокол — это главный документ." },
+            { keywords: ["тсж", "товарищество", "председатель", "правление"], question: "ТСЖ или Управляющая компания?", answer: "ТСЖ — это вы сами управляете домом (риски и доходы ваши). УК — нанятый профессионал. ТСЖ часто прозрачнее, но требует активной позиции жильцов." },
+            { keywords: ["капремонт", "фонд", "взносы", "новый дом"], question: "Обязателен ли взнос на капремонт?", answer: "Да, это налог-like платеж по ЖК РФ. Исключение — новостройки (первые 3-5 лет после сдачи) и аварийные дома." },
+            { keywords: ["горячая вода", "температура", "душ", "кипяток"], question: "Какая температура горячей воды?", answer: "Норма: от +60 до +75°C. Если из крана течет теплая (<40°C), вы имеете право платить за нее как за холодную (Пост. 354)." },
+            { keywords: ["плесень", "грибок", "сырость", "вентиляция"], question: "Плесень в квартире", answer: "Частая причина — неработающая вентиляция (вина УК) или промерзание стен. Нужно вызвать комиссию для определения причины." },
+            { keywords: ["балкон", "лоджия", "остекление", "плита"], question: "Ремонт балкона", answer: "Несущая плита балкона — общедомовое имущество (чинит УК). Остекление и отделка — собственность владельца." },
+            { keywords: ["собака", "кошка", "животное", "выгул"], question: "Содержание животных", answer: "Жильцы имеют право держать питомцев, если не нарушают права соседей (санитария, шум). Выгул только на специально отведенных площадках." },
+            { keywords: ["перепланировка", "снос стены", "согласование"], question: "Нужна ли перепланировка?", answer: "Любое изменение конфигурации квартиры требует согласования с администрацией. Снос несущих стен категорически запрещен." },
+            { keywords: ["видеонаблюдение", "камера", "безопасность"], question: "Установка камер в подъезде", answer: "Требуется решение ОСС. Камеры не должны смотреть в окна квартир или на лестничные площадки других этажей без согласия." },
+            { keywords: ["инвалид", "пандус", "льгота", "доступная среда"], question: "Права инвалидов", answer: "УК обязана обеспечить доступность (пандусы, поручни). Инвалиды I-II групп имеют льготу 50% на ЖКУ и капремонт." },
+            { keywords: ["субсидия", "малоимущий", "льгота", "помощь"], question: "Субсидия на оплату ЖКХ", answer: "Если расходы на коммуналку превышают 22% (в некоторых регионах меньше) от дохода семьи, государство компенсирует разницу. Обратитесь в соцзащиту." },
+            { keywords: ["пенсия", "ветеран", "пожилой", "80 лет"], question: "Льготы пенсионерам", answer: "Ветераны труда, войны — 50% скидка. Одинокие пенсионеры старше 80 лет освобождены от взносов на капремонт полностью." },
+            { keywords: ["счетчик", "показания", "передача", "сроки"], question: "Передача показаний счетчиков", answer: "Обычно с 15 по 25 число месяца. Если не передать, начислят по среднему (3 месяца), а потом по нормативу с коэффициентом 1.5." },
+            { keywords: ["авария", "прорыв", "затопление", "потоп"], question: "Действия при аварии (прорыв)", answer: "1. Звоните в аварийку. 2. Перекройте краны. 3. Фотографируйте ущерб. 4. Требуйте составить Акт о залитии. Это база для суда." },
+            { keywords: ["тараканы", "клопы", "дезинсекция", "грызуны"], question: "Дезинсекция и дератизация", answer: "УК обязана проводить обработку подвалов и мусоропроводов регулярно. Если насекомые лезут оттуда — это их зона ответственности." },
+            { keywords: ["деревья", "спил", "ветки", "окна"], question: "Деревья у дома", answer: "Кроны не должны касаться проводов и окон (СанПиН). Спиливание деревьев во дворе возможно только по порубочному билету администрации." },
+            { keywords: ["детская площадка", "горка", "песок", "безопасность"], question: "Состояние детской площадки", answer: "УК обязана следить за исправностью оборудования. Сломанные качели должны быть немедленно демонтированы или огорожены." },
+            { keywords: ["домофон", "ключ", "дверь", "код"], question: "Проблемы с домофоном", answer: "Обслуживание домофона обычно вынесено в отдельную строку квитанции. Чинит специализированная организация по договору с УК или напрямую с жителями." },
+            { keywords: ["почтовый ящик", "корреспонденция", "ключ"], question: "Почтовые ящики", answer: "Ящики находятся в местах общего пользования. Их целостность должна обеспечиваться УК. Замена замка — за счет собственника ячейки." },
+            { keywords: ["пожарная безопасность", "огнетушитель", "щит", "выход"], question: "Пожарная безопасность", answer: "Загромождение коридоров вещами запрещено. Огнетушители должны быть заряжены. Ответственность несет УК и собственники помещений." },
+            { keywords: ["уборка", "мытье пола", "санитария", "подъезд"], question: "График уборки подъезда", answer: "Влажная уборка первых этажей — ежедневно, остальных — раз в неделю (или чаще по решению ОСС). Мытье окон — 2 раза в год." },
+            { keywords: ["техпаспорт", "бти", "план", "экспликация"], question: "Где взять техпаспорт?", answer: "Заказывается в БТИ или через МФЦ/Госуслуги. Нужен для перепланировки, продажи, газа." },
+            { keywords: ["приватизация", "муниципальная", "соцнайм"], question: "Приватизация квартиры", answer: "Бесплатная передача гос/муниципального жилья в собственность. Один гражданин может приватизировать жилье только один раз (исключения для несовершеннолетних)." },
+            { keywords: ["аренда", "съем", "жилец", "договор"], question: "Права арендатора", answer: "Арендатор имеет право жить, принимать гостей, требовать ремонта от собственника. Выселить досрочно можно только через суд при нарушении договора." },
+            { keywords: ["продажа", "купля", "риэлтор", "документы"], question: "Документы для продажи", answer: "Выписка ЕГРН, паспорт, техплан, справка об отсутствии долгов по ЖКУ, согласие супруга (если куплено в браке)." },
+            { keywords: ["наследство", "завещание", "нотариус", "6 месяцев"], question: "Оформление наследства", answer: "Нужно подать заявление нотариусу в течение 6 месяцев со дня смерти. Если пропустили срок — восстанавливать через суд." },
+            { keywords: ["ипотека", "банк", "залог", "неуплата"], question: "Риски ипотеки", answer: "При неуплате банк обращает взыскание на квартиру. Единственное жилье могут забрать, если оно не является предметом ипотеки (сложная судебная практика)." },
+            { keywords: ["квитанция", "начисления", "проверка", "ошибка"], question: "Ошибка в квитанции", answer: "Сначала письменный запрос в УК/РКЦ с требованием разъяснений. Если не помогло — жалоба в ГЖИ. Не оплачивайте disputed сумму полностью, если не согласны." },
+            { keywords: ["отпуск", "отсутствие", "дача", "командировка"], question: "Перерасчет за отсутствие", answer: "Возможен только для услуг, где нет счетчиков (вывоз мусора, газ). Для воды/света, если счетчики есть, перерасчет не нужен — вы просто не потребляли." },
+            { keywords: ["новостройка", "застройщик", "дду", "приемка"], question: "Приемка квартиры в новостройке", answer: "Не подписывайте Акт приема-передачи, пока не проверите все! Лучше нанять проф. приемщика. Все дефекты должны быть в смотровом листе." },
+            { keywords: ["ремонт соседей", "вибрация", "пыль", "закон"], question: "Закон о ремонте (шум)", answer: "В большинстве регионов: Пн-Пт 9-19, Сб 10-18, Вс — выходной. 'Тихий час' 13-15 обязателен почти везде." },
+            { keywords: ["остекление балкона", "фасад", "цвет", "согласование"], question: "Остекление балкона", answer: "Если дом новый или исторический, цвет и стиль остекления должны быть едиными. Согласовывается с архитектурой города." },
+            { keywords: ["кондиционер", "внешний блок", "фасад"], question: "Установка кондиционера", answer: "На фасадах объектов культурного наследия запрещено. На обычных домах — желательно согласовать с УК, чтобы не портить вид." },
+            { keywords: ["антенна", "тарелка", "триколор", "крыша"], question: "Спутниковая антенна", answer: "Можно ставить на балкон или фасад (если не памятник архитектуры). На крыше — сложнее, нужно разрешение УК, так как крыша — общее имущество." },
+            { keywords: ["интернет", "вайфай", "провайдер", "кабель"], question: "Провайдеры в доме", answer: "УК не имеет права навязывать конкретного провайдера или брать деньги за 'доступ'. Собственники сами выбирают, чей кабель пустить в дом." },
+            { keywords: ["велосипед", "самокат", "коляска", "хранение"], question: "Хранение вещей в подъезде", answer: "Коляски и велосипеды хранить в общих тамбурах можно, если это не мешает проходу и эвакуации. Личные шкафы и закрытые ячейки — нельзя." }
+        ];
+
+        // Функция поиска ответа
+        function findAnswer(userInput) {
+            const input = userInput.toLowerCase();
+            
+            // Простой поиск совпадений
+            for (let item of zhkhDatabase) {
+                for (let keyword of item.keywords) {
+                    if (input.includes(keyword)) {
+                        return item.answer;
+                    }
+                }
+            }
+            
+            // Если ничего не нашли
+            return "Извините, я пока не знаю точного ответа на этот вопрос. Попробуйте спросить про: квартплату, ремонт, отопление, шумных соседей или претензии.";
+        }
+
+        // Добавление сообщения
+        function addMessage(text, isUser) {
+            const chatMessages = document.getElementById('chatMessages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${isUser ? 'user' : 'bot'}`;
+            messageDiv.textContent = text;
+            chatMessages.appendChild(messageDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        // Отправка
+        function sendMessage() {
+            const userInput = document.getElementById('userInput');
+            const question = userInput.value.trim();
+            
+            if (!question) return;
+            
+            addMessage(question, true);
+            userInput.value = '';
+            
+            // Имитация "думания"
+            setTimeout(() => {
+                const answer = findAnswer(question);
+                addMessage(answer, false);
+            }, 800);
+        }
+
+        // Быстрый вопрос
+        function askQuestion(question) {
+            document.getElementById('userInput').value = question;
+            sendMessage();
+        }
+
+        // Enter
+        function handleKeyPress(event) {
+            if (event.key === 'Enter') sendMessage();
+        }
+    </script>
+</body>
+</html>
