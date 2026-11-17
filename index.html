@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Каталог решений — AI-инструменты и веб-сервисы</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --bg:#F4F5F7; --card-bg:#FFFFFF; --text:#1A1D22; --muted:#6B7280;
+    --light:#9CA3AF; --border:#E8EAED; --border-soft:#F0F1F3;
+    --accent:#2563EB; --green:#059669; --orange:#EA580C; --red:#DC2626;
+    --purple:#7C3AED; --teal:#0D9488;
+    --shadow:0 1px 3px rgba(0,0,0,.06),0 1px 2px rgba(0,0,0,.04);
+    --shadow-h:0 10px 30px rgba(0,0,0,.08),0 2px 8px rgba(0,0,0,.04);
+  }
+  body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var(--text);line-height:1.5;-webkit-font-smoothing:antialiased}
+
+  .page-header{background:#fff;border-bottom:1px solid var(--border);padding:16px 0}
+  .header-inner{max-width:1200px;margin:0 auto;padding:0 32px;display:flex;align-items:center;justify-content:space-between}
+  .logo{font-weight:800;font-size:16px;display:flex;align-items:center;gap:8px}
+  .logo-icon{width:28px;height:28px;border-radius:7px;background:linear-gradient(135deg,var(--accent),var(--purple));display:flex;align-items:center;justify-content:center;color:#fff;font-size:14px;font-weight:800}
+  .header-meta{font-size:13px;color:var(--muted)}
+
+  .main{max-width:1200px;margin:0 auto;padding:36px 32px 56px}
+  .catalog-title{font-size:30px;font-weight:800;letter-spacing:-.02em;margin-bottom:6px}
+  .catalog-subtitle{font-size:14px;color:var(--muted);margin-bottom:28px}
+
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+
+  .card{background:var(--card-bg);border-radius:14px;overflow:hidden;box-shadow:var(--shadow);transition:box-shadow .2s,transform .2s;display:flex;flex-direction:column;border:1px solid var(--border-soft)}
+  .card:hover{box-shadow:var(--shadow-h);transform:translateY(-3px)}
+
+  .preview{height:178px;overflow:hidden;position:relative;border-bottom:1px solid var(--border-soft)}
+  .preview-number{position:absolute;top:10px;left:12px;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;color:rgba(255,255,255,.75);background:rgba(0,0,0,.3);padding:2px 8px;border-radius:5px;z-index:5;letter-spacing:.05em;backdrop-filter:blur(4px)}
+  .preview-light .preview-number{color:rgba(0,0,0,.45);background:rgba(255,255,255,.8)}
+
+  .card-content{padding:18px 20px 20px;display:flex;flex-direction:column;flex:1}
+  .badge{display:inline-flex;align-items:center;font-size:11px;font-weight:600;padding:3px 10px;border-radius:999px;margin-bottom:10px;width:fit-content}
+  .badge-blue{background:#EFF6FF;color:#2563EB}
+  .badge-dark{background:#F1F5F9;color:#475569}
+  .badge-green{background:#ECFDF5;color:#059669}
+  .badge-orange{background:#FFF7ED;color:#EA580C}
+  .badge-teal{background:#F0FDFA;color:#0D9488}
+  .badge-purple{background:#F5F3FF;color:#7C3AED}
+
+  .card-title{font-size:18px;font-weight:800;letter-spacing:-.01em;margin-bottom:12px;line-height:1.25}
+
+  .bullets{list-style:none;margin-bottom:16px;flex:1}
+  .bullets li{font-size:13px;color:#4B5563;padding:5px 0 5px 24px;position:relative;line-height:1.4}
+  .bullets li::before{content:"";position:absolute;left:0;top:9px;width:15px;height:15px;border-radius:50%;background:#ECFDF5}
+  .bullets li::after{content:"";position:absolute;left:4px;top:12px;width:7px;height:4px;border-left:2px solid #059669;border-bottom:2px solid #059669;transform:rotate(-45deg)}
+
+  .card-buttons{display:flex;gap:8px}
+  .btn{flex:1;padding:9px 12px;border-radius:8px;font-size:13px;font-weight:600;border:none;cursor:pointer;transition:all .15s;display:flex;align-items:center;justify-content:center;gap:6px;font-family:inherit;text-decoration:none}
+  .btn-primary{background:var(--text);color:#fff}
+  .btn-primary:hover{background:#000}
+  .btn-secondary{background:#F3F4F6;color:var(--text);border:1px solid var(--border)}
+  .btn-secondary:hover{background:#E8EAED}
+  .btn-secondary.copied{background:#ECFDF5;color:#059669;border-color:#A7F3D0}
+
+  /* === Mockups === */
+  .mk-zhkh{background:linear-gradient(180deg,#1E40AF,#2563EB);padding:8px;height:100%;display:flex;flex-direction:column;gap:6px}
+  .mk-zhkh .h{color:#fff;font-size:9px;font-weight:700;padding:4px 8px;display:flex;justify-content:space-between;align-items:center}
+  .mk-zhkh .chat{background:rgba(255,255,255,.96);border-radius:7px;padding:7px;flex:1;display:flex;flex-direction:column;gap:4px}
+  .mk-zhkh .b{font-size:8px;padding:4px 7px;border-radius:5px;line-height:1.3}
+  .mk-zhkh .bot{background:#DBEAFE;color:#1E40AF;align-self:flex-start}
+  .mk-zhkh .usr{background:#FEF3C7;color:#92400E;align-self:flex-end}
+  .mk-zhkh .btns{display:flex;gap:3px;flex-wrap:wrap}
+  .mk-zhkh .qb{font-size:7px;padding:2px 6px;border-radius:4px;background:#2563EB;color:#fff;font-weight:600}
+
+  .mk-audit{background:#0F172A;padding:8px;height:100%;display:flex;flex-direction:column;gap:4px}
+  .mk-audit .h{color:#94A3B8;font-size:8px;padding:3px 6px;display:flex;justify-content:space-between;border-bottom:1px solid #1E293B}
+  .mk-audit .doc{flex:1;background:#1E293B;border-radius:5px;padding:6px;display:flex;flex-direction:column;gap:3px}
+  .mk-audit .ln{height:5px;border-radius:2px;background:#334155}
+  .mk-audit .ln-r{background:rgba(220,38,38,.25);border:1px solid rgba(220,38,38,.4)}
+  .mk-audit .flag{font-size:7px;color:#FCA5A5;padding:1px 5px;background:rgba(220,38,38,.15);border-radius:3px;width:fit-content;font-weight:600}
+
+  .mk-dash{background:#F8FAFC;padding:8px;height:100%;display:flex;flex-direction:column;gap:5px}
+  .mk-dash .h{font-size:8px;color:#64748B;padding:2px 4px;font-weight:600}
+  .mk-dash .kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:4px}
+  .mk-dash .kpi{background:#fff;border:1px solid #E2E8F0;border-radius:5px;padding:4px 5px}
+  .mk-dash .kl{font-size:6px;color:#94A3B8}
+  .mk-dash .kv{font-size:10px;font-weight:800}
+  .mk-dash .chart{background:#fff;border:1px solid #E2E8F0;border-radius:5px;padding:6px;flex:1;display:flex;align-items:flex-end;gap:3px}
+  .mk-dash .bar{flex:1;border-radius:2px 2px 0 0}
+
+  .mk-sort{background:#F8FAFC;padding:8px;height:100%;display:flex;gap:6px}
+  .mk-sort .col{flex:1;display:flex;flex-direction:column;gap:3px}
+  .mk-sort .ct{font-size:7px;font-weight:700;color:#64748B;padding:2px 4px}
+  .mk-sort .em{background:#fff;border:1px solid #E2E8F0;border-radius:4px;padding:3px 5px;font-size:7px;line-height:1.3}
+  .mk-sort .em.hot{border-color:#FCA5A5;background:#FEF2F2}
+  .mk-sort .em.spam{border-color:#D1D5DB;background:#F9FAFB;opacity:.55}
+  .mk-sort .arr{display:flex;flex-direction:column;justify-content:center;gap:9px;font-size:11px;color:#CBD5E1}
+
+  .mk-calc{background:#fff;padding:8px;height:100%;display:flex;flex-direction:column;gap:5px}
+  .mk-calc .h{background:#0D9488;color:#fff;font-size:8px;font-weight:700;padding:4px 8px;border-radius:5px}
+  .mk-calc .f{display:flex;justify-content:space-between;padding:4px 7px;background:#F0FDFA;border-radius:4px;font-size:8px;border:1px solid #CCFBF1}
+  .mk-calc .fl{color:#64748B}
+  .mk-calc .fv{font-weight:700;color:#0F172A}
+  .mk-calc .r{background:#0D9488;color:#fff;padding:6px 8px;border-radius:6px;text-align:center}
+  .mk-calc .rl{font-size:7px;opacity:.8}
+  .mk-calc .rv{font-size:15px;font-weight:800}
+  .mk-calc .tg{display:flex;align-items:center;justify-content:center;gap:4px;font-size:7px;color:#2563EB;padding:3px;border:1px dashed #93C5FD;border-radius:4px;font-weight:600}
+
+  .mk-art{background:#fff;padding:10px;height:100%;display:flex;flex-direction:column;gap:4px}
+  .mk-art .tag{font-size:6px;color:#7C3AED;font-weight:700}
+  .mk-art .t{font-size:10px;font-weight:800;line-height:1.2;color:#1A1D22}
+  .mk-art .ln{height:4px;border-radius:2px;background:#E5E7EB}
+  .mk-art .s{width:80%}.mk-art .m{width:60%}
+  .mk-art .tags{display:flex;gap:3px;margin-top:2px}
+  .mk-art .chip{font-size:6px;padding:1px 5px;border-radius:3px;font-weight:700}
+  .mk-art .g{background:#ECFDF5;color:#059669}
+  .mk-art .p{background:#F5F3FF;color:#7C3AED}
+
+  /* === Modal === */
+  .modal-overlay{position:fixed;inset:0;background:rgba(15,23,42,.55);backdrop-filter:blur(6px);display:none;align-items:center;justify-content:center;z-index:1000;padding:24px;opacity:0;transition:opacity .25s ease}
+  .modal-overlay.active{display:flex;opacity:1}
+  .modal{background:#fff;border-radius:16px;max-width:560px;width:100%;max-height:90vh;overflow-y:auto;position:relative;box-shadow:0 25px 60px rgba(0,0,0,.25);transform:translateY(24px) scale(.96);transition:transform .3s cubic-bezier(.2,.7,.2,1)}
+  .modal-overlay.active .modal{transform:translateY(0) scale(1)}
+  .modal-close{position:absolute;top:14px;right:14px;width:32px;height:32px;border-radius:8px;border:none;background:#F3F4F6;color:#6B7280;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;z-index:10;font-family:inherit}
+  .modal-close:hover{background:#EF4444;color:#fff}
+  .modal-mockup{height:170px;overflow:hidden;border-radius:16px 16px 0 0;border-bottom:1px solid var(--border)}
+  .modal-body{padding:22px 26px 26px}
+  .modal-title{font-size:22px;font-weight:800;letter-spacing:-.01em;margin:8px 0 10px;line-height:1.2}
+  .modal-desc{font-size:14px;color:#4B5563;line-height:1.55;margin-bottom:16px}
+  .modal-section-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#9CA3AF;margin-bottom:8px}
+  .modal-tech{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:18px}
+  .tech-tag{font-size:12px;font-weight:600;padding:4px 10px;border-radius:6px;background:#F1F5F9;color:#475569;border:1px solid #E2E8F0}
+  .modal-metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:20px}
+  .metric-card{background:#F8FAFC;border:1px solid #E2E8F0;border-radius:10px;padding:10px 12px;text-align:center}
+  .metric-label{font-size:10px;color:#94A3B8;text-transform:uppercase;letter-spacing:.05em;font-weight:600}
+  .metric-value{font-size:20px;font-weight:800;margin-top:3px}
+  .metric-value.green{color:#059669}
+  .metric-value.orange{color:#EA580C}
+  .modal-cta{width:100%;padding:12px;font-size:14px;border-radius:10px}
+
+  .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(120px);background:#1A1D22;color:#fff;padding:11px 20px;border-radius:10px;font-size:14px;font-weight:500;box-shadow:0 10px 30px rgba(0,0,0,.25);transition:transform .3s cubic-bezier(.2,.7,.2,1);z-index:1100;display:flex;align-items:center;gap:8px}
+  .toast.show{transform:translateX(-50%) translateY(0)}
+  .toast-ic{width:18px;height:18px;border-radius:50%;background:#059669;display:flex;align-items:center;justify-content:center;font-size:11px;color:#fff}
+
+  .footer{text-align:center;padding:20px;font-size:13px;color:var(--light);border-top:1px solid var(--border);background:#fff}
+
+  @media(max-width:900px){.grid{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:640px){.grid{grid-template-columns:1fr}.main{padding:24px 16px 40px}.catalog-title{font-size:24px}.header-inner{padding:0 16px}.modal-metrics{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<header class="page-header">
+  <div class="header-inner">
+    <div class="logo">
+      <div class="logo-icon">A</div>
+      <span>AI / WEB / AUTOMATION</span>
+    </div>
+    <div class="header-meta">Каталог решений · 6 проектов</div>
+  </div>
+</header>
+
+<main class="main">
+  <h1 class="catalog-title">Каталог решений</h1>
+  <p class="catalog-subtitle">Готовые ИИ-инструменты и веб-сервисы под ключ. Каждый проект можно открыть в демо или скопировать ссылку для заказа.</p>
+
+  <div class="grid">
+
+    <!-- Card 1 — прямая ссылка https://github.io -->
+    <article class="card">
+      <div class="preview">
+        <div class="preview-number">01</div>
+        <div class="mk-zhkh">
+          <div class="h"><span>AI-Юрист ЖКХ</span><span style="font-size:7px">● online</span></div>
+          <div class="chat">
+            <div class="b bot">Выберите тему вопроса:</div>
+            <div class="btns"><span class="qb">Перерасчёт</span><span class="qb">Ремонт</span><span class="qb">Долги</span></div>
+            <div class="b usr">Не пришла квитанция</div>
+            <div class="b bot">Ст. 155 ЖК РФ → заявка в УК ✓</div>
+          </div>
+        </div>
+      </div>
+      <div class="card-content">
+        <span class="badge badge-blue">ЖКХ и Юристы</span>
+        <h3 class="card-title">Консультант кнопками 24/7</h3>
+        <ul class="bullets">
+          <li>Быстрые кнопки частых проблем</li>
+          <li>Ответы со ссылками на статьи ЖК РФ</li>
+          <li>Сбор заявок без нагрузки на юристов</li>
+        </ul>
+        <div class="card-buttons">
+          <button class="btn btn-primary" onclick="openDemo('https://github.io')">Открыть демо</button>
+          <button class="btn btn-secondary" onclick="copyLink('https://github.io', this)">Скопировать ссылку</button>
+        </div>
+      </div>
+    </article>
+
+    <!-- Card 2 — прямая ссылка https://github.io -->
+    <article class="card">
+      <div class="preview">
+        <div class="preview-number">02</div>
+        <div class="mk-audit">
+          <div class="h"><span>Контекст.Бюро</span><span style="color:#FCA5A5">2 ошибки</span></div>
+          <div class="doc">
+            <div class="ln"></div>
+            <div class="ln ln-r"></div>
+            <div class="flag">! Цена: 000 ₽</div>
+            <div class="ln"></div>
+            <div class="ln ln-r"></div>
+            <div class="flag">! Дата: 15.03.2025</div>
+            <div class="ln"></div>
+          </div>
+        </div>
+      </div>
+      <div class="card-content">
+        <span class="badge badge-dark">Договоры и Финансы</span>
+        <h3 class="card-title">Проверка цифр офлайн</h3>
+        <ul class="bullets">
+          <li>Поиск сбоев в цифрах и датах с красной подсветкой</li>
+          <li>Работа 100% в браузере без интернета</li>
+          <li>Полная защита коммерческой тайны</li>
+        </ul>
+        <div class="card-buttons">
+          <button class="btn btn-primary" onclick="openDemo('https://github.io')">Открыть демо</button>
+          <button class="btn btn-secondary" onclick="copyLink('https://github.io', this)">Скопировать ссылку</button>
+        </div>
+      </div>
+    </article>
+
+    <!-- Card 3 — модальное окно -->
+    <article class="card">
+      <div class="preview preview-light">
+        <div class="preview-number">03</div>
+        <div class="mk-dash">
+          <div class="h">Дашборд продаж · DataLens</div>
+          <div class="kpis">
+            <div class="kpi"><div class="kl">Доход</div><div class="kv" style="color:#059669">1.21М</div></div>
+            <div class="kpi"><div class="kl">Расход</div><div class="kv" style="color:#EA580C">389К</div></div>
+            <div class="kpi"><div class="kl">ROI</div><div class="kv" style="color:#059669">312%</div></div>
+          </div>
+          <div class="chart">
+            <div class="bar" style="height:35%;background:#059669"></div>
+            <div class="bar" style="height:50%;background:#059669"></div>
+            <div class="bar" style="height:42%;background:#059669"></div>
+            <div class="bar" style="height:65%;background:#059669"></div>
+            <div class="bar" style="height:80%;background:#059669"></div>
+            <div class="bar" style="height:95%;background:#10B981"></div>
+          </div>
+        </div>
+      </div>
+      <div class="card-content">
+        <span class="badge badge-green">Продажи и Реклама</span>
+        <h3 class="card-title">Вся прибыль на одном экране</h3>
+        <ul class="bullets">
+          <li>Автоматическая сводка из Яндекс Метрики и CRM</li>
+          <li>Контроль окупаемости рекламы за 5 секунд</li>
+          <li>Понятные фильтры по периодам и менеджерам</li>
+        </ul>
+        <div class="card-buttons">
+          <button class="btn btn-primary" onclick="openModal(3)">Открыть демо</button>
+          <button class="btn btn-secondary" onclick="copyLink('https://github.com', this)">Скопировать ссылку</button>
+        </div>
+      </div>
+    </article>
+
+    <!-- Card 4 — модальное окно -->
+    <article class="card">
+      <div class="preview preview-light">
+        <div class="preview-number">04</div>
+        <div class="mk-sort">
+          <div class="col">
+            <div class="ct">Входящие</div>
+            <div class="em hot">Заявка на ремонт</div>
+            <div class="em spam">Акции! Скидки</div>
+            <div class="em">Повтор заявки</div>
+            <div class="em hot">Срочно: расчёт</div>
+          </div>
+          <div class="arr"><span>→</span><span>→</span><span>→</span><span>→</span></div>
+          <div class="col">
+            <div class="ct">Сортировка</div>
+            <div class="em hot">🔥 → Менеджер</div>
+            <div class="em spam">🗑 → Спам</div>
+            <div class="em" style="opacity:.5">📋 → Дубль</div>
+            <div class="em hot">🔥 → Менеджер</div>
+          </div>
+        </div>
+      </div>
+      <div class="card-content">
+        <span class="badge badge-orange">Отдел продаж и Поддержка</span>
+        <h3 class="card-title">Умная сортировка заявок</h3>
+        <ul class="bullets">
+          <li>Точность распознавания темы от 92%</li>
+          <li>Мгновенная передача горячих клиентов менеджеру</li>
+          <li>Отсеивание спама и дублей</li>
+        </ul>
+        <div class="card-buttons">
+          <button class="btn btn-primary" onclick="openModal(4)">Открыть демо</button>
+          <button class="btn btn-secondary" onclick="copyLink('https://github.com', this)">Скопировать ссылку</button>
+        </div>
+      </div>
+    </article>
+
+    <!-- Card 5 — модальное окно -->
+    <article class="card">
+      <div class="preview preview-light">
+        <div class="preview-number">05</div>
+        <div class="mk-calc">
+          <div class="h">Калькулятор сметы</div>
+          <div class="f"><span class="fl">Площадь</span><span class="fv">45 м²</span></div>
+          <div class="f"><span class="fl">Тип работ</span><span class="fv">Ремонт</span></div>
+          <div class="r"><div class="rl">Стоимость</div><div class="rv">45 000 ₽</div></div>
+          <div class="tg">↗ Отправить в Telegram</div>
+        </div>
+      </div>
+      <div class="card-content">
+        <span class="badge badge-teal">Услуги и Расчеты</span>
+        <h3 class="card-title">Липкий калькулятор сметы</h3>
+        <ul class="bullets">
+          <li>Мгновенный расчет стоимости для клиента</li>
+          <li>Передача готовой сметы сразу в Telegram-бот</li>
+          <li>Адаптация под смартфоны</li>
+        </ul>
+        <div class="card-buttons">
+          <button class="btn btn-primary" onclick="openModal(5)">Открыть демо</button>
+          <button class="btn btn-secondary" onclick="copyLink('https://github.com', this)">Скопировать ссылку</button>
+        </div>
+      </div>
+    </article>
+
+    <!-- Card 6 — модальное окно -->
+    <article class="card">
+      <div class="preview preview-light">
+        <div class="preview-number">06</div>
+        <div class="mk-art">
+          <div class="tag">● SEO · 4 200 запр/мес</div>
+          <div class="t">Как выбрать AI-бота для ЖКХ: чек-лист</div>
+          <div class="ln s"></div>
+          <div class="ln"></div>
+          <div class="ln"></div>
+          <div class="ln m"></div>
+          <div class="tags">
+            <span class="chip g">✓ Фактчекинг</span>
+            <span class="chip p">✓ SEO</span>
+            <span class="chip g">✓ Готово</span>
+          </div>
+        </div>
+      </div>
+      <div class="card-content">
+        <span class="badge badge-purple">Блоги и Сайты</span>
+        <h3 class="card-title">Статьи с проверкой фактов</h3>
+        <ul class="bullets">
+          <li>Глубокий анализ спроса и SEO-структура</li>
+          <li>100% фактчекинг без выдумок нейросети</li>
+          <li>Готовность к публикации</li>
+        </ul>
+        <div class="card-buttons">
+          <button class="btn btn-primary" onclick="openModal(6)">Открыть демо</button>
+          <button class="btn btn-secondary" onclick="copyLink('https://github.com', this)">Скопировать ссылку</button>
+        </div>
+      </div>
+    </article>
+
+  </div>
+</main>
+
+<footer class="footer">Открыт к новым проектам · ответ меньше 1 часа · гарантия результата</footer>
+
+<!-- Toast -->
+<div class="toast" id="toast">
+  <div class="toast-ic">✓</div>
+  <span>Ссылка скопирована в буфер обмена</span>
+</div>
+
+<!-- Modal -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">×</button>
+    <div id="modalInner"></div>
+  </div>
+</div>
+
+<script>
+/* ===== Данные кейсов для модальных окон ===== */
+const caseData = {
+  3: {
+    badge:'Продажи и Реклама', badgeClass:'badge-green',
+    title:'Вся прибыль на одном экране',
+    desc:'Дашборд в Yandex DataLens объединяет данные из Яндекс Метрики, CRM и рекламных кабинетов на одном экране. Автоматическое обновление каждые 15 минут — вы видите актуальную картину в любой момент, без ручного сведения таблиц.',
+    tech:['Yandex DataLens','Metrika API','CRM API','SQL','Scheduled ETL'],
+    metrics:[
+      {l:'ROI',v:'312%',c:'green'},
+      {l:'CPA',v:'−24%',c:'green'},
+      {l:'До ответа',v:'5 сек',c:''}
+    ],
+    link:'https://github.com',
+    mockup:`<div class="mk-dash" style="height:100%;border-radius:0">
+      <div class="h">Дашборд продаж · DataLens · auto-refresh 15min</div>
+      <div class="kpis" style="grid-template-columns:repeat(4,1fr)">
+        <div class="kpi"><div class="kl">Доход</div><div class="kv" style="color:#059669">1.21М</div></div>
+        <div class="kpi"><div class="kl">Расход</div><div class="kv" style="color:#EA580C">389К</div></div>
+        <div class="kpi"><div class="kl">ROI</div><div class="kv" style="color:#059669">312%</div></div>
+        <div class="kpi"><div class="kl">CPA</div><div class="kv" style="color:#059669">−24%</div></div>
+      </div>
+      <div class="chart">
+        <div class="bar" style="height:30%;background:#059669"></div>
+        <div class="bar" style="height:50%;background:#059669"></div>
+        <div class="bar" style="height:42%;background:#059669"></div>
+        <div class="bar" style="height:65%;background:#059669"></div>
+        <div class="bar" style="height:80%;background:#059669"></div>
+        <div class="bar" style="height:95%;background:#10B981"></div>
+      </div>
+    </div>`
+  },
+  4: {
+    badge:'Отдел продаж и Поддержка', badgeClass:'badge-orange',
+    title:'Умная сортировка заявок',
+    desc:'ИИ-классификатор на Python с моделью ruBERT-tiny анализирует каждое входящее обращение, определяет категорию и срочность, автоматически распределяет по менеджерам в CRM и Slack. Горячие лиды уходят мгновенно, спам и дубли отсеиваются до человека.',
+    tech:['Python','Transformers','ruBERT-tiny','Slack API','CRM API'],
+    metrics:[
+      {l:'Точность',v:'92%',c:'green'},
+      {l:'SLA горячих',v:'5 мин',c:''},
+      {l:'Потерянных',v:'0',c:'green'}
+    ],
+    link:'https://github.com',
+    mockup:`<div class="mk-sort" style="height:100%;border-radius:0">
+      <div class="col">
+        <div class="ct">Входящие (12)</div>
+        <div class="em hot">Заявка на ремонт</div>
+        <div class="em spam">Акции! Скидки 90%</div>
+        <div class="em">Повтор: квитанция</div>
+        <div class="em hot">Срочно: расчёт сметы</div>
+        <div class="em spam">Реклама: SEO услуги</div>
+      </div>
+      <div class="arr"><span>→</span><span>→</span><span>→</span><span>→</span><span>→</span><span>→</span></div>
+      <div class="col">
+        <div class="ct">Маршруты</div>
+        <div class="em hot">🔥 → Менеджер #1</div>
+        <div class="em spam">🗑 → Спам</div>
+        <div class="em" style="opacity:.5">📋 → Дубль-архив</div>
+        <div class="em hot">🔥 → Менеджер #2</div>
+        <div class="em spam">🗑 → Спам</div>
+      </div>
+    </div>`
+  },
+  5: {
+    badge:'Услуги и Расчеты', badgeClass:'badge-teal',
+    title:'Липкий калькулятор сметы',
+    desc:'Интерактивный калькулятор сметы для сайта услуг. Клиент вводит параметры — площадь, тип работ, материалы — и мгновенно получает стоимость. Готовая смета автоматически улетает в Telegram-бот менеджера. Полностью адаптивен, работает даже на медленном интернете.',
+    tech:['React','Telegram Bot API','Tailwind CSS','PWA','LocalStorage'],
+    metrics:[
+      {l:'Расчёт',v:'мгновенно',c:''},
+      {l:'Конверсия',v:'+47%',c:'green'},
+      {l:'Адаптив',v:'100%',c:''}
+    ],
+    link:'https://github.com',
+    mockup:`<div class="mk-calc" style="height:100%;border-radius:0">
+      <div class="h">Калькулятор сметы · online</div>
+      <div class="f"><span class="fl">Площадь</span><span class="fv">45 м²</span></div>
+      <div class="f"><span class="fl">Тип работ</span><span class="fv">Ремонт под ключ</span></div>
+      <div class="f"><span class="fl">Материалы</span><span class="fv">Средний+</span></div>
+      <div class="r"><div class="rl">Предварительная стоимость</div><div class="rv">45 000 ₽</div></div>
+      <div class="tg">↗ Отправить смету в Telegram-бот</div>
+    </div>`
+  },
+  6: {
+    badge:'Блоги и Сайты', badgeClass:'badge-purple',
+    title:'Статьи с проверкой фактов',
+    desc:'Экспертные статьи на основе реального спроса из Yandex Wordstat. ИИ анализирует тему, составляет SEO-структуру, пишет черновик. Затем — глубокий фактчекинг: проверка каждой цифры, даты и ссылки. Никаких выдумок нейросети — только подтверждённые факты, готовые к публикации.',
+    tech:['Python','OpenAI API','Yandex Wordstat','SEO Tools','Fact-check Pipeline'],
+    metrics:[
+      {l:'Рост лидов',v:'×3',c:'green'},
+      {l:'Конверсия',v:'4.2%',c:'green'},
+      {l:'Выдумок',v:'0',c:''}
+    ],
+    link:'https://github.com',
+    mockup:`<div class="mk-art" style="height:100%;border-radius:0;padding:12px">
+      <div class="tag">● SEO-анализ · 4 200 запр/мес · конкуренция: низкая</div>
+      <div class="t" style="font-size:12px;margin-top:2px">Как выбрать AI-бота для ЖКХ: чек-лист из 12 пунктов</div>
+      <div class="ln s" style="height:5px"></div>
+      <div class="ln" style="height:5px"></div>
+      <div class="ln" style="height:5px"></div>
+      <div class="ln m" style="height:5px"></div>
+      <div class="ln" style="height:5px"></div>
+      <div class="ln m" style="height:5px"></div>
+      <div class="tags" style="margin-top:4px">
+        <span class="chip g">✓ Фактчекинг</span>
+        <span class="chip p">✓ SEO</span>
+        <span class="chip g">✓ Готово</span>
+        <span class="chip g">✓ 12 ссылок</span>
+      </div>
+    </div>`
+  }
+};
+
+/* ===== Открыть демо (прямая ссылка) ===== */
+function openDemo(url){
+  window.open(url,'_blank');
+}
+
+/* ===== Открыть модальное окно кейса ===== */
+function openModal(id){
+  const c = caseData[id];
+  if(!c) return;
+
+  const techHtml = c.tech.map(t => `<span class="tech-tag">${t}</span>`).join('');
+  const metricsHtml = c.metrics.map(m =>
+    `<div class="metric-card">
+      <div class="metric-label">${m.l}</div>
+      <div class="metric-value ${m.c}">${m.v}</div>
+    </div>`
+  ).join('');
+
+  document.getElementById('modalInner').innerHTML = `
+    <div class="modal-mockup">${c.mockup}</div>
+    <div class="modal-body">
+      <span class="badge ${c.badgeClass}">${c.badge}</span>
+      <h2 class="modal-title">${c.title}</h2>
+      <p class="modal-desc">${c.desc}</p>
+      <div class="modal-section-label">Технологии</div>
+      <div class="modal-tech">${techHtml}</div>
+      <div class="modal-section-label">Ключевые метрики</div>
+      <div class="modal-metrics">${metricsHtml}</div>
+      <a href="${c.link}" target="_blank" class="btn btn-primary modal-cta">
+        Перейти на GitHub →
+      </a>
+    </div>
+  `;
+
+  const overlay = document.getElementById('modalOverlay');
+  overlay.classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+/* ===== Закрыть модальное окно ===== */
+function closeModal(){
+  document.getElementById('modalOverlay').classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+/* ===== ESC для закрытия ===== */
+document.addEventListener('keydown', e => {
+  if(e.key === 'Escape') closeModal();
+});
+
+/* ===== Клик по overlay для закрытия ===== */
+document.getElementById('modalOverlay').addEventListener('click', e => {
+  if(e.target === e.currentTarget) closeModal();
+});
+
+/* ===== Копирование ссылки ===== */
+function copyLink(url, btn){
+  const done = () => {
+    btn.classList.add('copied');
+    btn.innerHTML = '✓ Скопировано';
+    const t = document.getElementById('toast');
+    t.classList.add('show');
+    setTimeout(() => {
+      btn.classList.remove('copied');
+      btn.innerHTML = 'Скопировать ссылку';
+      t.classList.remove('show');
+    }, 2500);
+  };
+  const fallback = () => {
+    const ta = document.createElement('textarea');
+    ta.value = url;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    done();
+  };
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(url).then(done).catch(fallback);
+  } else {
+    fallback();
+  }
+}
+</script>
+
+</body>
+</html>
