@@ -58,7 +58,7 @@
 ## 📞 Контакты
 
 **Разработчик:** Наталья Гарбузова
-**GitHub:** [garbuzovan496-debug](https://github.com/garbuzovan496-debug)
+**GitHub:** [garbuzovan496-debug](garbuzovan496-debug.github.io/kontekst/)
 
 ## 📝 Лицензия
 
