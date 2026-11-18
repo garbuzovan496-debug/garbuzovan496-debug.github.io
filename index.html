@@ -5,8 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Каталог решений | AI / WEB / AUTOMATION</title>
     <style>
-        /* Стили изолированы, чтобы Tilda их не ломала */
-        .catalog-wrapper { 
+        :root { 
             --bg: #0a0a0a; 
             --card-bg: #111; 
             --text: #fff; 
@@ -14,28 +13,27 @@
             --accent-blue: #2563eb; 
             --accent-orange: #f97316; 
             --accent-purple: #a855f7; 
-            
+        }
+        body { 
+            margin: 0; 
             font-family: 'Segoe UI', system-ui, sans-serif; 
             background: var(--bg); 
             color: var(--text); 
             padding: 40px 20px; 
-            box-sizing: border-box;
         }
-        .catalog-wrapper * { box-sizing: border-box; }
-        
-        .catalog-container { max-width: 1200px; margin: 0 auto; }
-        .catalog-wrapper h1 { text-align: center; font-size: 2.5rem; margin-bottom: 10px; font-weight: 700; color: #fff;}
-        .catalog-wrapper .subtitle { text-align: center; color: #888; margin-bottom: 50px; font-size: 1.1rem; }
+        .container { max-width: 1200px; margin: 0 auto; }
+        h1 { text-align: center; font-size: 2.5rem; margin-bottom: 10px; }
+        .subtitle { text-align: center; color: #888; margin-bottom: 50px; }
         
         /* Сетка карточек */
-        .catalog-grid { 
+        .grid { 
             display: grid; 
             grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); 
             gap: 30px; 
         }
         
         /* Карточка */
-        .catalog-card { 
+        .card { 
             background: var(--card-bg); 
             border-radius: 16px; 
             overflow: hidden; 
@@ -44,13 +42,13 @@
             display: flex; 
             flex-direction: column; 
         }
-        .catalog-card:hover { 
+        .card:hover { 
             transform: translateY(-5px); 
             border-color: #444; 
         }
         
-        /* Блок с картинкой */
-        .catalog-card-img-container {
+        /* Контейнер для картинок */
+        .card-img-container {
             width: 100%;
             height: 200px; 
             background: #1e293b; 
@@ -60,15 +58,15 @@
             border-bottom: 1px solid #222;
             overflow: hidden;
         }
-        .catalog-card-img { 
+        .card-img { 
             width: 100%; 
             height: 100%; 
-            object-fit: cover; /* Заполняет блок целиком */
+            object-fit: cover; 
             display: block;
         }
         
-        .catalog-card-body { padding: 25px; flex-grow: 1; display: flex; flex-direction: column; }
-        .catalog-badge { 
+        .card-body { padding: 25px; flex-grow: 1; display: flex; flex-direction: column; }
+        .badge { 
             display: inline-block; 
             padding: 4px 12px; 
             border-radius: 20px; 
@@ -82,13 +80,13 @@
         .badge-orange { background: rgba(249, 115, 22, 0.1); color: var(--accent-orange); }
         .badge-purple { background: rgba(168, 85, 247, 0.1); color: var(--accent-purple); }
         
-        .catalog-wrapper h3 { margin: 0 0 15px 0; font-size: 1.3rem; color: #fff; font-weight: 600;}
-        .catalog-features { list-style: none; padding: 0; margin: 0 0 25px 0; flex-grow: 1; }
-        .catalog-features li { margin-bottom: 8px; color: #ccc; font-size: 0.9rem; line-height: 1.4; }
+        h3 { margin: 0 0 15px 0; font-size: 1.3rem; }
+        ul.features { list-style: none; padding: 0; margin: 0 0 25px 0; flex-grow: 1; }
+        ul.features li { margin-bottom: 8px; color: #ccc; font-size: 0.9rem; line-height: 1.4; }
         
         /* Кнопки */
-        .catalog-card-actions { display: flex; gap: 10px; margin-top: auto; }
-        .catalog-btn { 
+        .card-actions { display: flex; gap: 10px; margin-top: auto; }
+        .btn { 
             flex: 1; 
             padding: 12px; 
             border: none; 
@@ -102,14 +100,13 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-family: inherit;
         }
-        .catalog-btn:hover { opacity: 0.8; }
-        .catalog-btn-primary { background: #fff; color: #000; }
-        .catalog-btn-secondary { background: #222; color: #fff; border: 1px solid #333; }
+        .btn:hover { opacity: 0.9; }
+        .btn-primary { background: #fff; color: #000; }
+        .btn-secondary { background: #222; color: #fff; border: 1px solid #333; }
         
-        /* Уведомление */
-        #catalog-toast { 
+        /* Уведомление о копировании */
+        #toast { 
             visibility: hidden; 
             min-width: 250px; 
             background-color: #333; 
@@ -118,168 +115,156 @@
             border-radius: 8px; 
             padding: 16px; 
             position: fixed; 
-            z-index: 9999; 
+            z-index: 1000; 
             left: 50%; 
             bottom: 30px; 
             transform: translateX(-50%); 
-            font-size: 16px; 
-            font-family: sans-serif;
+            font-size: 17px; 
         }
-        #catalog-toast.show { visibility: visible; animation: fadein 0.5s, fadeout 0.5s 2.5s; }
+        #toast.show { visibility: visible; animation: fadein 0.5s, fadeout 0.5s 2.5s; }
         @keyframes fadein { from {bottom: 0; opacity: 0;} to {bottom: 30px; opacity: 1;} }
         @keyframes fadeout { from {bottom: 30px; opacity: 1;} to {bottom: 0; opacity: 0;} }
-        
-        /* Адаптив для мобильных */
-        @media (max-width: 480px) {
-            .catalog-wrapper { padding: 20px 10px; }
-            .catalog-card-actions { flex-direction: column; }
-        }
     </style>
 </head>
-<body style="margin:0; padding:0;">
+<body>
 
-<!-- Обертка для изоляции стилей от Tilda -->
-<div class="catalog-wrapper">
-    <div class="catalog-container">
-        <h1>Каталог решений</h1>
-        <p class="subtitle">Готовые ИИ-инструменты и веб-сервисы под ключ. Каждый проект можно открыть в демо.</p>
-        
-        <div class="catalog-grid">
-            <!-- 01. AI-Юрист -->
-            <div class="catalog-card">
-                <div class="catalog-card-img-container">
-                    <!-- Путь к вашей картинке на GitHub -->
-                    <img src="cover-ai-jurist.png" alt="AI Юрист" class="catalog-card-img">
-                </div>
-                <div class="catalog-card-body">
-                    <span class="catalog-badge badge-green">ЖКХ и Юристы</span>
-                    <h3>Консультант кнопками 24/7</h3>
-                    <ul class="catalog-features">
-                        <li>✅ Быстрые кнопки частых проблем</li>
-                        <li>✅ Ответы со ссылками на статьи ЖК РФ</li>
-                        <li>✅ Сбор заявок без нагрузки на юристов</li>
-                    </ul>
-                    <div class="catalog-card-actions">
-                        <a href="https://garbuzovan496-debug.github.io/ai-jurist/" target="_blank" class="catalog-btn catalog-btn-primary">Открыть демо</a>
-                        <button class="catalog-btn catalog-btn-secondary" onclick="copyCatalogLink('https://garbuzovan496-debug.github.io/ai-jurist/')">Скопировать ссылку</button>
-                    </div>
+<div class="container">
+    <h1>Каталог решений</h1>
+    <p class="subtitle">Готовые ИИ-инструменты и веб-сервисы под ключ. Каждый проект можно открыть в демо.</p>
+    
+    <div class="grid">
+        <!-- 01. AI-Юрист -->
+        <div class="card">
+            <div class="card-img-container">
+                <img src="cover-ai-jurist.png" alt="AI Юрист" class="card-img">
+            </div>
+            <div class="card-body">
+                <span class="badge badge-green">ЖКХ и Юристы</span>
+                <h3>Консультант кнопками 24/7</h3>
+                <ul class="features">
+                    <li>✅ Быстрые кнопки частых проблем</li>
+                    <li>✅ Ответы со ссылками на статьи ЖК РФ</li>
+                    <li>✅ Сбор заявок без нагрузки на юристов</li>
+                </ul>
+                <div class="card-actions">
+                    <a href="https://garbuzovan496-debug.github.io/ai-jurist/" target="_blank" class="btn btn-primary">Открыть демо</a>
+                    <button class="btn btn-secondary" onclick="copyLink('https://garbuzovan496-debug.github.io/ai-jurist/')">Скопировать ссылку</button>
                 </div>
             </div>
+        </div>
 
-            <!-- 02. Контекст.Бюро -->
-            <div class="catalog-card">
-                <div class="catalog-card-img-container">
-                    <img src="cover-text-audit.png" alt="Аудит текстов" class="catalog-card-img">
-                </div>
-                <div class="catalog-card-body">
-                    <span class="catalog-badge badge-blue">Договоры и Финансы</span>
-                    <h3>Проверка цифр офлайн</h3>
-                    <ul class="catalog-features">
-                        <li>✅ Поиск сбоев в цифрах и датах</li>
-                        <li>✅ Работа 100% в браузере без интернета</li>
-                        <li>✅ Полная защита коммерческой тайны</li>
-                    </ul>
-                    <div class="catalog-card-actions">
-                        <a href="https://garbuzovan496-debug.github.io/kontekst/" target="_blank" class="catalog-btn catalog-btn-primary">Открыть демо</a>
-                        <button class="catalog-btn catalog-btn-secondary" onclick="copyCatalogLink('https://garbuzovan496-debug.github.io/kontekst/')">Скопировать ссылку</button>
-                    </div>
+        <!-- 02. Контекст.Бюро -->
+        <div class="card">
+            <div class="card-img-container">
+                <img src="cover-text-audit.png" alt="Аудит текстов" class="card-img">
+            </div>
+            <div class="card-body">
+                <span class="badge badge-blue">Договоры и Финансы</span>
+                <h3>Проверка цифр офлайн</h3>
+                <ul class="features">
+                    <li>✅ Поиск сбоев в цифрах и датах</li>
+                    <li>✅ Работа 100% в браузере без интернета</li>
+                    <li>✅ Полная защита коммерческой тайны</li>
+                </ul>
+                <div class="card-actions">
+                    <a href="https://garbuzovan496-debug.github.io/kontekst/" target="_blank" class="btn btn-primary">Открыть демо</a>
+                    <button class="btn btn-secondary" onclick="copyLink('https://garbuzovan496-debug.github.io/kontekst/')">Скопировать ссылку</button>
                 </div>
             </div>
+        </div>
 
-            <!-- 03. Дашборд продаж -->
-            <div class="catalog-card">
-                <div class="catalog-card-img-container">
-                    <img src="cover-datalens.png" alt="Дашборд продаж" class="catalog-card-img">
-                </div>
-                <div class="catalog-card-body">
-                    <span class="catalog-badge badge-green">Продажи и Реклама</span>
-                    <h3>Вся прибыль на одном экране</h3>
-                    <ul class="catalog-features">
-                        <li>✅ Авто-сводка из Яндекс Метрики и CRM</li>
-                        <li>✅ Контроль окупаемости рекламы за 5 сек</li>
-                        <li>✅ Фильтры по менеджерам и периодам</li>
-                    </ul>
-                    <div class="catalog-card-actions">
-                        <a href="https://garbuzovan496-debug.github.io/datalens-sales-dashboard/" target="_blank" class="catalog-btn catalog-btn-primary">Открыть демо</a>
-                        <button class="catalog-btn catalog-btn-secondary" onclick="copyCatalogLink('https://garbuzovan496-debug.github.io/datalens-sales-dashboard/')">Скопировать ссылку</button>
-                    </div>
+        <!-- 03. Дашборд продаж -->
+        <div class="card">
+            <div class="card-img-container">
+                <img src="cover-datalens.png" alt="Дашборд продаж" class="card-img">
+            </div>
+            <div class="card-body">
+                <span class="badge badge-green">Продажи и Реклама</span>
+                <h3>Вся прибыль на одном экране</h3>
+                <ul class="features">
+                    <li>✅ Авто-сводка из Яндекс Метрики и CRM</li>
+                    <li>✅ Контроль окупаемости рекламы за 5 сек</li>
+                    <li>✅ Фильтры по менеджерам и периодам</li>
+                </ul>
+                <div class="card-actions">
+                    <a href="https://garbuzovan496-debug.github.io/datalens-sales-dashboard/" target="_blank" class="btn btn-primary">Открыть демо</a>
+                    <button class="btn btn-secondary" onclick="copyLink('https://garbuzovan496-debug.github.io/datalens-sales-dashboard/')">Скопировать ссылку</button>
                 </div>
             </div>
+        </div>
 
-            <!-- 04. Умная сортировка -->
-            <div class="catalog-card">
-                <div class="catalog-card-img-container">
-                    <img src="cover-nlp-classifier.png" alt="NLP Классификатор" class="catalog-card-img">
-                </div>
-                <div class="catalog-card-body">
-                    <span class="catalog-badge badge-blue">NLP / Автоматизация</span>
-                    <h3>Умная сортировка заявок</h3>
-                    <ul class="catalog-features">
-                        <li>✅ Точность распознавания: 92% (XLM-RoBERTa)</li>
-                        <li>✅ Поддержка RU/EN/DE языков</li>
-                        <li>✅ Мгновенная маршрутизация менеджеру</li>
-                    </ul>
-                    <div class="catalog-card-actions">
-                        <a href="https://garbuzovan496-debug.github.io/queen-assistant/" target="_blank" class="catalog-btn catalog-btn-primary">Открыть демо</a>
-                        <button class="catalog-btn catalog-btn-secondary" onclick="copyCatalogLink('https://garbuzovan496-debug.github.io/queen-assistant/')">Скопировать ссылку</button>
-                    </div>
+        <!-- 04. Умная сортировка -->
+        <div class="card">
+            <div class="card-img-container">
+                <img src="cover-nlp-classifier.png" alt="NLP Классификатор" class="card-img">
+            </div>
+            <div class="card-body">
+                <span class="badge badge-blue">NLP / Автоматизация</span>
+                <h3>Умная сортировка заявок</h3>
+                <ul class="features">
+                    <li>✅ Точность распознавания: 92% (XLM-RoBERTa)</li>
+                    <li>✅ Поддержка RU/EN/DE языков</li>
+                    <li>✅ Мгновенная маршрутизация менеджеру</li>
+                </ul>
+                <div class="card-actions">
+                    <a href="https://garbuzovan496-debug.github.io/queen-assistant/" target="_blank" class="btn btn-primary">Открыть демо</a>
+                    <button class="btn btn-secondary" onclick="copyLink('https://garbuzovan496-debug.github.io/queen-assistant/')">Скопировать ссылку</button>
                 </div>
             </div>
+        </div>
 
-            <!-- 05. Мультиагенты -->
-            <div class="catalog-card">
-                <div class="catalog-card-img-container">
-                    <img src="cover-multiaagent.png" alt="Фабрика агентов" class="catalog-card-img">
-                </div>
-                <div class="catalog-card-body">
-                    <span class="catalog-badge badge-orange">AI Agents / Local LLM</span>
-                    <h3>Фабрика агентов под ключ</h3>
-                    <ul class="catalog-features">
-                        <li>✅ 5 агентов: Оркестратор, Скаут, Кодер...</li>
-                        <li>✅ Локальный LLM Bonsai 27B (без облака)</li>
-                        <li>✅ Полный цикл: от задачи до упаковки</li>
-                    </ul>
-                    <div class="catalog-card-actions">
-                        <a href="https://github.com/garbuzovan496-debug/local-ai-agents" target="_blank" class="catalog-btn catalog-btn-primary">Изучить архитектуру</a>
-                        <button class="catalog-btn catalog-btn-secondary" onclick="copyCatalogLink('https://github.com/garbuzovan496-debug/local-ai-agents')">Скопировать ссылку</button>
-                    </div>
+        <!-- 05. Мультиагенты (ссылка обновлена на страницу с картинкой) -->
+        <div class="card">
+            <div class="card-img-container">
+                <img src="cover-multiaagent.png" alt="Фабрика агентов" class="card-img">
+            </div>
+            <div class="card-body">
+                <span class="badge badge-orange">AI Agents / Local LLM</span>
+                <h3>Фабрика агентов под ключ</h3>
+                <ul class="features">
+                    <li>✅ 5 агентов: Оркестратор, Скаут, Кодер...</li>
+                    <li>✅ Локальный LLM Bonsai 27B (без облака)</li>
+                    <li>✅ Полный цикл: от задачи до упаковки</li>
+                </ul>
+                <div class="card-actions">
+                    <a href="https://garbuzovan496-debug.github.io/agents/" target="_blank" class="btn btn-primary">Изучить архитектуру</a>
+                    <button class="btn btn-secondary" onclick="copyLink('https://garbuzovan496-debug.github.io/agents/')">Скопировать ссылку</button>
                 </div>
             </div>
+        </div>
 
-            <!-- 06. n8n Автоматизация -->
-            <div class="catalog-card">
-                <div class="catalog-card-img-container">
-                    <img src="cover-n8n-automation.png" alt="n8n Automation" class="catalog-card-img">
-                </div>
-                <div class="catalog-card-body">
-                    <span class="catalog-badge badge-purple">No-Code / Интеграции</span>
-                    <h3>Авто-аналитика в n8n</h3>
-                    <ul class="catalog-features">
-                        <li>✅ Сбор данных из Яндекс.Метрики по расписанию</li>
-                        <li>✅ ИИ-анализ через GigaChat API</li>
-                        <li>✅ Авто-отчеты в Telegram + Docker</li>
-                    </ul>
-                    <div class="catalog-card-actions">
-                        <a href="https://github.com/garbuzovan496-debug/ai-data-automation" target="_blank" class="catalog-btn catalog-btn-primary">Смотреть workflow</a>
-                        <button class="catalog-btn catalog-btn-secondary" onclick="copyCatalogLink('https://github.com/garbuzovan496-debug/ai-data-automation')">Скопировать ссылку</button>
-                    </div>
+        <!-- 06. n8n Автоматизация (ссылка обновлена на страницу с картинкой) -->
+        <div class="card">
+            <div class="card-img-container">
+                <img src="cover-n8n-automation.png" alt="n8n Automation" class="card-img">
+            </div>
+            <div class="card-body">
+                <span class="badge badge-purple">No-Code / Интеграции</span>
+                <h3>Авто-аналитика в n8n</h3>
+                <ul class="features">
+                    <li>✅ Сбор данных из Яндекс.Метрики по расписанию</li>
+                    <li>✅ ИИ-анализ через GigaChat API</li>
+                    <li>✅ Авто-отчеты в Telegram + Docker</li>
+                </ul>
+                <div class="card-actions">
+                    <a href="https://garbuzovan496-debug.github.io/n8n/" target="_blank" class="btn btn-primary">Смотреть workflow</a>
+                    <button class="btn btn-secondary" onclick="copyLink('https://garbuzovan496-debug.github.io/n8n/')">Скопировать ссылку</button>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-<div id="catalog-toast">Ссылка скопирована!</div>
+<div id="toast">Ссылка скопирована!</div>
 
 <script>
-function copyCatalogLink(url) {
+function copyLink(url) {
     navigator.clipboard.writeText(url).then(function() {
-        var x = document.getElementById("catalog-toast");
+        var x = document.getElementById("toast");
         x.className = "show";
         setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
     }, function(err) {
         console.error('Ошибка копирования: ', err);
-        alert('Не удалось скопировать. Ссылка: ' + url);
     });
 }
 </script>
